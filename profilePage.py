@@ -1,4 +1,3 @@
-import csv
 
 from PySide6.QtWidgets import (
     QFrame, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QStackedWidget, QLineEdit, QFileDialog, QSpacerItem,
@@ -7,8 +6,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QPixmap, QIcon, QPainter
 from PySide6.QtCore import Qt
 
-
-
+import csv
 
 class ProfilePage(QFrame):
     def __init__(self, pages: QStackedWidget):
@@ -118,11 +116,24 @@ class ProfilePage(QFrame):
         self.profile_pic.setPixmap(pixmap)
         layout.addWidget(self.profile_pic, alignment=Qt.AlignCenter)
 
-        # Change image
+        # Change image button
         changePic_button = QPushButton("Change picture")
         changePic_button.setFixedSize(150, 35)
-        changePic_button.setStyleSheet(
-            "background-color: #555555; border: none; border-radius: 8px; color: #FFFFFF; font-weight: bold;")
+        changePic_button.setStyleSheet("""
+            QPushButton {
+                background-color: #555555; 
+                border: none; 
+                border-radius: 8px; 
+                color: #FFFFFF; 
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #666666;  
+            }
+            QPushButton:pressed {
+                background-color: #777777;  
+            }
+        """)
         changePic_button.clicked.connect(self.change_profile_picture)
         layout.addWidget(changePic_button, alignment=Qt.AlignCenter)
 
@@ -172,15 +183,29 @@ class ProfilePage(QFrame):
 
         layout.addLayout(form_layout)
 
-        # Save Changes Button
+        # Save Changes button
         save_button = QPushButton("Save Changes")
         save_button.setFixedSize(150, 35)
-        save_button.setStyleSheet(
-            "background-color: #555555; border: none; border-radius: 8px; color: #FFFFFF; font-weight: bold;")
+        save_button.setStyleSheet("""
+            QPushButton {
+                background-color: #555555; 
+                border: none; 
+                border-radius: 8px; 
+                color: #FFFFFF; 
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #666666;  
+            }
+            QPushButton:pressed {
+                background-color: #777777;  
+            }
+        """)
         save_button.clicked.connect(self.save_changes)
         layout.addWidget(save_button, alignment=Qt.AlignCenter)
 
         return box
+
 
     def load_books_from_csv(self, filename):
         author = []
@@ -325,12 +350,6 @@ class ProfilePage(QFrame):
         # Placeholder logic to save the changes
         print(f"Profile Updated:\nUsername: {username}\nPassword: {password}\nEmail: {email}")
 
-        # Optionally show confirmation
-        success_label = QLabel("Profile updated successfully!")
-        success_label.setStyleSheet("color: #00FF00; font-size: 14px; font-weight: bold;")
-        success_label.setAlignment(Qt.AlignLeft)
-        self.layout().itemAt(1).addWidget(success_label)
-
 
     def go_to_book(self, book_data):
         print(f"Book clicked: {book_data['book']}")
@@ -345,57 +364,8 @@ class ProfilePage(QFrame):
 
         from bookPage import BookPage
         book_page = BookPage(self.pages,{book_data['name']},{book_data['book']},
-                                        {book_data['type']},{book_data['description']})
+                                        {book_data['type']},{book_data['description']},{book_data['image']})
         layout.addWidget(book_page)
 
-
-
-
-        # # Layout for the details page
-        # details_layout = QVBoxLayout(book_page)
-        # details_layout.setContentsMargins(20, 20, 20, 20)
-        #
-        # # Add a title label
-        # title_label = QLabel(f"Title: {book_data['book']}")
-        # title_label.setStyleSheet("font-weight: bold; font-size: 18px; color: #FFFFFF;")
-        # details_layout.addWidget(title_label)
-        #
-        # # Add an author label
-        # author_label = QLabel(f"Author: {book_data['name']}")
-        # author_label.setStyleSheet("font-size: 16px; color: #CCCCCC;")
-        # details_layout.addWidget(author_label)
-        #
-        # # Add a type label (e.g., genre or book type)
-        # type_label = QLabel(f"Type: {book_data['type']}")
-        # type_label.setStyleSheet("font-size: 16px; color: #CCCCCC;")
-        # details_layout.addWidget(type_label)
-        #
-        # # Add a description label (if `description` exists in book_data)
-        # if "description" in book_data:
-        #     description_label = QLabel(f"Description: {book_data['description']}")
-        #     description_label.setWordWrap(True)  # Allow multi-line text
-        #     description_label.setStyleSheet("font-size: 14px; color: #BBBBBB;")
-        #     details_layout.addWidget(description_label)
-        #
-        # # Add a "Back" button to go back to the previous screen
-        # back_button = QPushButton("Back")
-        # back_button.setStyleSheet("""
-        #     QPushButton {
-        #         background-color: #444444;
-        #         color: #FFFFFF;
-        #         border: none;
-        #         border-radius: 5px;
-        #         padding: 10px;
-        #     }
-        #     QPushButton:hover {
-        #         background-color: #666666;
-        #     }
-        # """)
-        # back_button.setFixedWidth(100)
-        # back_button.clicked.connect(lambda: self.pages.setCurrentIndex(2))
-        # details_layout.addWidget(back_button)
-
         self.pages.addWidget(page)
-
-        # Set the details page as the current page
         self.pages.setCurrentWidget(page)
