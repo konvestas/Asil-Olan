@@ -81,8 +81,8 @@ class ProfilePage(QFrame):
 
         boxes.addWidget(box_left)
         boxes.addWidget(box_topRight)
-        content_layout.addLayout(boxes)
 
+        content_layout.addLayout(boxes)
         self.setLayout(main_layout)
 
     def create_userBox(self):
