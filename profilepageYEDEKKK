@@ -3,7 +3,7 @@ from PySide6.QtWidgets import (
     QFrame, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QStackedWidget, QLineEdit, QFileDialog, QSpacerItem,
     QSizePolicy, QScrollArea, QWidget
 )
-from PySide6.QtGui import QPixmap, QIcon, QPainter
+from PySide6.QtGui import QPixmap, QIcon
 from PySide6.QtCore import Qt
 
 import csv
@@ -12,6 +12,7 @@ class ProfilePage(QFrame):
     def __init__(self, pages: QStackedWidget):
         super().__init__()
         self.pages = pages
+        self.books_data = []
 
         self.setStyleSheet("""
                                     QWidget { background-color: #222222; color: #FFFFFF; }
@@ -55,14 +56,16 @@ class ProfilePage(QFrame):
         top_bar.addSpacerItem(spacer)
 
         # Search bar
-        search_bar = QLineEdit()
-        search_bar.setPlaceholderText("Search...")
-        search_bar.setFixedSize(200, 35)
+        self.search_bar = QLineEdit()
+        self.search_bar.setPlaceholderText("Search...")
+        self.search_bar.setFixedSize(200, 35)
+
         icon = QIcon("assets/icons/search_icon.png")
-        search_bar.addAction(icon, QLineEdit.TrailingPosition)
+        self.search_bar.addAction(icon, QLineEdit.TrailingPosition)
+
 
         # Icon alignment
-        search_bar.setStyleSheet("""
+        self.search_bar.setStyleSheet("""
                                     QLineEdit {
                                         background-color: #333333;
                                         border: 1px solid #444444;
@@ -71,23 +74,33 @@ class ProfilePage(QFrame):
                                         color: white;
                                     }
                                 """)
-        top_bar.addWidget(search_bar, alignment=Qt.AlignLeft)
+        top_bar.addWidget(self.search_bar, alignment=Qt.AlignLeft)
         content_layout.addLayout(top_bar)
 
-        boxes = QHBoxLayout()
-        box_left = self.create_userBox()
 
-        box_topRight = self.create_book_box("Your downloads","mostDownloadedBooks")
+        boxes = QHBoxLayout()
+
+        box_left = self.create_userBox()
+        box_topRight = self.create_book_box("Your downloads", "mostDownloadedBooks")
+        box_bottomRight = self.create_book_box("Recommended Books", "mostDownloadedBooks")
+
+        # Vertical layout for right-side stacking
+        right_boxes = QVBoxLayout()
+        right_boxes.setSpacing(10)
+        right_boxes.addWidget(box_topRight)
+        right_boxes.addWidget(box_bottomRight)
 
         boxes.addWidget(box_left)
-        boxes.addWidget(box_topRight)
+        boxes.addLayout(right_boxes)
 
         content_layout.addLayout(boxes)
+
         self.setLayout(main_layout)
+
 
     def create_userBox(self):
         box = QFrame()
-        box.setFixedSize(657, 701)  # Increased height for a larger profile picture
+        box.setFixedSize(657, 701)
         box.setStyleSheet("background-color: #333333; border-radius: 8px;")
 
         # Main layout for the box
@@ -104,12 +117,10 @@ class ProfilePage(QFrame):
 
         self.profile_pic = QLabel()
 
-        self.profile_pic.setFixedSize(200, 150)  # Rectangle Shape
-        self.profile_pic.setStyleSheet("border: 2px solid #555555; background-color: #444444;border-radius: 5px;")
-
+        self.profile_pic.setFixedSize(200, 150)
+        self.profile_pic.setStyleSheet("border: 2px solid #555555;background-color: #444444;border-radius: 7px;")
         self.profile_pic.setAlignment(Qt.AlignCenter)
 
-        # Load an image (replace 'path/to/profile_pic.png' with your image path)
         pixmap = QPixmap("assets/kitaplar/photomode_13012023_190407.png").scaled(300, 250,
                                                                                  Qt.KeepAspectRatioByExpanding,
                                                                                  Qt.SmoothTransformation)
@@ -121,17 +132,17 @@ class ProfilePage(QFrame):
         changePic_button.setFixedSize(150, 35)
         changePic_button.setStyleSheet("""
             QPushButton {
-                background-color: #555555; 
-                border: none; 
-                border-radius: 8px; 
-                color: #FFFFFF; 
+                background-color: #555555;
+                border: none;
+                border-radius: 8px;
+                color: #FFFFFF;
                 font-weight: bold;
             }
             QPushButton:hover {
-                background-color: #666666;  
+                background-color: #666666;
             }
             QPushButton:pressed {
-                background-color: #777777;  
+                background-color: #777777;
             }
         """)
         changePic_button.clicked.connect(self.change_profile_picture)
@@ -150,6 +161,7 @@ class ProfilePage(QFrame):
         self.username_edit.setFixedSize(200, 30)
         self.username_edit.setStyleSheet(
             "background-color: #444444; border: 1px solid #555555; border-radius: 5px; padding: 5px;")
+
         username_layout.addWidget(username_label)
         username_layout.addWidget(self.username_edit)
         form_layout.addLayout(username_layout)
@@ -164,6 +176,7 @@ class ProfilePage(QFrame):
         self.password_edit.setFixedSize(200, 30)
         self.password_edit.setStyleSheet(
             "background-color: #444444; border: 1px solid #555555; border-radius: 5px; padding: 5px;")
+
         password_layout.addWidget(password_label)
         password_layout.addWidget(self.password_edit)
         form_layout.addLayout(password_layout)
@@ -177,6 +190,7 @@ class ProfilePage(QFrame):
         self.email_edit.setFixedSize(200, 30)
         self.email_edit.setStyleSheet(
             "background-color: #444444; border: 1px solid #555555; border-radius: 5px; padding: 5px;")
+
         email_layout.addWidget(email_label)
         email_layout.addWidget(self.email_edit)
         form_layout.addLayout(email_layout)
@@ -188,24 +202,23 @@ class ProfilePage(QFrame):
         save_button.setFixedSize(150, 35)
         save_button.setStyleSheet("""
             QPushButton {
-                background-color: #555555; 
-                border: none; 
-                border-radius: 8px; 
-                color: #FFFFFF; 
+                background-color: #555555;
+                border: none;
+                border-radius: 8px;
+                color: #FFFFFF;
                 font-weight: bold;
             }
             QPushButton:hover {
-                background-color: #666666;  
+                background-color: #666666;
             }
             QPushButton:pressed {
-                background-color: #777777;  
+                background-color: #777777;
             }
         """)
         save_button.clicked.connect(self.save_changes)
         layout.addWidget(save_button, alignment=Qt.AlignCenter)
 
         return box
-
 
     def load_books_from_csv(self, filename):
         author = []
@@ -226,7 +239,7 @@ class ProfilePage(QFrame):
 
     def create_book_box(self, own_label, file_name):
         box = QFrame()
-        box.setFixedSize(620, 325)
+        box.setFixedSize(620, 344)
         box.setStyleSheet("background-color: #333333; border-radius: 8px;")
 
         # Main layout for the box
@@ -236,8 +249,10 @@ class ProfilePage(QFrame):
 
         # Top Section
         top_layout = QHBoxLayout()
+
         title_label = QLabel(own_label)
         title_label.setStyleSheet("font-size: 20px; font-weight: bold;")
+
         top_layout.addWidget(title_label)
         layout.addLayout(top_layout)
 
@@ -258,15 +273,14 @@ class ProfilePage(QFrame):
         scroll_layout.setContentsMargins(0, 0, 0, 0)
         scroll_layout.setSpacing(10)
 
-
         authors = self.load_books_from_csv(file_name)
         for author in authors:
             scroll_layout.addWidget(self.create_book_row(author))
 
         scroll_layout.addStretch()
-
         scroll_area.setWidget(scroll_content)
         layout.addWidget(scroll_area)
+
         return box
 
     def create_book_row(self, data):
@@ -294,13 +308,12 @@ class ProfilePage(QFrame):
         row_layout.setContentsMargins(10, 5, 10, 5)
         row_layout.setSpacing(10)
 
-
         author_pic_frame = QFrame(row_button)
         author_pic_frame.setFixedSize(50, 50)
         author_pic_frame.setStyleSheet("""
             QFrame {
-                background-color: transparent;  /* Let the row button's hover color shine through */
-                border-radius: 10px;  /* Matches row_button border radius */
+                background-color: transparent;
+                border-radius: 10px;
             }
         """)
 
@@ -315,14 +328,13 @@ class ProfilePage(QFrame):
         text_frame = QFrame(row_button)
         text_frame.setStyleSheet("""
             QFrame {
-                background-color: transparent;  /* Let the row button's hover color shine through */
+                background-color: transparent;
             }
         """)
 
         text_layout = QVBoxLayout(text_frame)
         text_layout.setContentsMargins(0, 0, 0, 0)
         text_layout.setSpacing(2)
-
 
         name_label = QLabel(data["book"], text_frame)
         name_label.setStyleSheet("font-weight: bold; font-size: 14px; color: #FFFFFF;")
@@ -352,8 +364,6 @@ class ProfilePage(QFrame):
 
 
     def go_to_book(self, book_data):
-        print(f"Book clicked: {book_data['book']}")
-
         page = QFrame()
         page.setStyleSheet("background-color: #444444; border-radius: 8px;")
 

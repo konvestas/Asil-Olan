@@ -56,9 +56,8 @@ class SideMenu(QWidget):
         buttons = [
             {"text": "Home", "icon": "assets/icons/home_icon.png", "index": 2},
             {"text": "Library", "icon": "assets/icons/book_icon.png", "index": 3},
-            {"text": "Downloads", "icon": "assets/icons/download_icon.png", "index": 3},
+            {"text": "Downloads", "icon": "assets/icons/download_icon.png", "index": 4},
         ]
-
 
         for button in buttons:
             btn = QPushButton(button["text"])
@@ -85,7 +84,7 @@ class SideMenu(QWidget):
 
         # Bottom Buttons
         bottom_buttons = [
-            {"text": "Profile", "icon": "assets/icons/profile_icon.png", "index": 4},
+            {"text": "Profile", "icon": "assets/icons/profile_icon.png", "index": 5},
             {"text": "Logout", "icon": "assets/icons/logout_icon.png", "index": 1},
         ]
 
@@ -97,7 +96,7 @@ class SideMenu(QWidget):
             sidebar_layout.addWidget(btn)
         sidebar.setLayout(sidebar_layout)
 
-        # Main layout for SideMenu
+
         layout = QHBoxLayout(self)
         layout.addWidget(sidebar)
         layout.addStretch()

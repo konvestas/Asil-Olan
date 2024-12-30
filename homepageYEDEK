@@ -209,8 +209,8 @@ class HomePage(QFrame):
         author_pic_frame.setFixedSize(50, 50)
         author_pic_frame.setStyleSheet("""
             QFrame {
-                background-color: transparent;  
-                border-radius: 10px;  
+                background-color: transparent;
+                border-radius: 10px;
             }
         """)
 
@@ -225,7 +225,7 @@ class HomePage(QFrame):
         text_frame = QFrame(row_button)
         text_frame.setStyleSheet("""
             QFrame {
-                background-color: transparent;  
+                background-color: transparent;
             }
         """)
 

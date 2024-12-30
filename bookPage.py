@@ -7,7 +7,7 @@ from PySide6.QtCore import Qt, QSize
 
 
 class BookPage(QFrame):
-    def __init__(self, pages: QStackedWidget, book_name, book_book, book_type, book_description, book_image):
+    def __init__(self, pages: QStackedWidget, book_name, book_book, book_type, book_description=None, book_image=None):
         super().__init__()
         self.setFixedSize(1475, 800)
 
@@ -90,7 +90,7 @@ class BookPage(QFrame):
 
     def create_info_bookBox(self, book_name, book_book, book_type, book_description, book_image):
         box = QFrame()
-        box.setFixedSize(1285, 701)
+        box.setFixedSize(1300, 701)
         box.setStyleSheet("background-color: #333333; border-radius: 8px;")
 
 
@@ -149,7 +149,7 @@ class BookPage(QFrame):
 
         # Book image layout
         book_pic_layout = QVBoxLayout()
-        book_pic_layout.setContentsMargins(140, 0, 90, 150)  # Control image margins
+        book_pic_layout.setContentsMargins(80, 0, 55, 120)
         book_pic_layout.setSpacing(0)
 
         book_picture = QLabel()
@@ -226,10 +226,25 @@ class BookPage(QFrame):
         details_layout.addWidget(action_button, alignment=Qt.AlignLeft)
 
         main_layout.addLayout(details_layout)
-
         return box
 
     def go_back(self):
         current_index = self.pages.currentIndex()
         if current_index > 0:
             self.pages.setCurrentIndex(current_index - 1)
+
+    def go_to_book(self, book_data):
+        page = QFrame()
+        page.setStyleSheet("background-color: #444444; border-radius: 8px;")
+
+        layout = QVBoxLayout(page)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(20)
+
+        from bookPage import BookPage
+        book_page = BookPage(self.pages, {book_data['name']}, {book_data['book']},
+                             {book_data['type']}, {book_data['description']}, {book_data['image']})
+        layout.addWidget(book_page)
+
+        self.pages.addWidget(page)
+        self.pages.setCurrentWidget(page)

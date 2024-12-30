@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget
 
+from downloadsPage import DownloadsPage
 from homePage import HomePage
 from loginPage import LoginPage
 
@@ -32,15 +33,17 @@ class MainWindow(QMainWindow):
         library_page = LibraryPage(self.pages)
         self.pages.addWidget(library_page)
 
-        # Download page
+        # Download page 4
+        downloads_page = DownloadsPage(self.pages)
+        self.pages.addWidget(downloads_page)
 
-        # profile page 4
+        # profile page 5
         profile_page = ProfilePage(self.pages)
         self.pages.addWidget(profile_page)
 
 
         self.setCentralWidget(self.pages)
-        self.pages.setCurrentIndex(4)
+        self.pages.setCurrentIndex(2)
 
 
 

@@ -111,7 +111,7 @@ class LibraryPage(QFrame):
 
     def create_book_box(self, own_label, file_name):
         box = QFrame()
-        box.setFixedSize(620, 325)
+        box.setFixedSize(625, 325)
         box.setStyleSheet("background-color: #333333; border-radius: 8px;")
 
         # Main layout for the box
@@ -121,21 +121,24 @@ class LibraryPage(QFrame):
 
         # Top Section
         top_layout = QHBoxLayout()
+
         title_label = QLabel(own_label)
         title_label.setStyleSheet("font-size: 20px; font-weight: bold;")
+
         top_layout.addWidget(title_label)
         layout.addLayout(top_layout)
+
 
         # Scroll Area
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setStyleSheet("""
-            QScrollArea { background-color: transparent; }
-            QScrollBar:vertical { border: none; background: #444444; width: 10px;  }
-            QScrollBar::handle:vertical { background: #666666; border-radius: 5px; }
-            QScrollBar::handle:vertical:hover { background: #888888; }
-            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
-        """)
+                    QScrollArea { background-color: transparent; }
+                    QScrollBar:vertical { border: none; background: white; width: 10px;  }
+                    QScrollBar::handle:vertical { background: #666666; border-radius: 5px; }
+                    QScrollBar::handle:vertical:hover { background: #888888; }
+                    QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
+                """)
 
         # Container for scroll content
         scroll_content = QWidget()
@@ -143,42 +146,97 @@ class LibraryPage(QFrame):
         scroll_layout.setContentsMargins(0, 0, 0, 0)
         scroll_layout.setSpacing(10)
 
-
+        # create row
         authors = self.load_books_from_csv(file_name)
         for author in authors:
             scroll_layout.addWidget(self.create_book_row(author))
 
         scroll_layout.addStretch()
-
         scroll_area.setWidget(scroll_content)
         layout.addWidget(scroll_area)
+
         return box
 
 
     def create_book_row(self, data):
-        row = QFrame()
-        row.setFixedHeight(60)
-        row.setStyleSheet("background-color: #444444; border-radius: 10px;")
+        row_button = QPushButton()
+        row_button.setFixedHeight(60)
+        row_button.setStyleSheet("""
+            QPushButton {
+                background-color: #444444;
+                border: none;
+                border-radius: 10px;
+                text-align: left;
+                padding: 5px;
+            }
+            QPushButton:hover {
+                background-color: #666666;
+            }
+            QPushButton:pressed {
+                background-color: #666666;
+            }
+        """)
+        row_button.clicked.connect(lambda: self.go_to_book(data))
 
-        row_layout = QHBoxLayout(row)
+        row_layout = QHBoxLayout(row_button)
         row_layout.setContentsMargins(10, 5, 10, 5)
         row_layout.setSpacing(10)
 
-        # Author Picture
-        author_pic = QLabel()
+        author_pic_frame = QFrame(row_button)
+        author_pic_frame.setFixedSize(50, 50)
+        author_pic_frame.setStyleSheet("""
+            QFrame {
+                background-color: transparent;  
+                border-radius: 10px;  
+            }
+        """)
+
+        author_pic = QLabel(author_pic_frame)
         pixmap = QPixmap(data["image"]).scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         author_pic.setPixmap(pixmap)
-        author_pic.setFixedSize(50, 50)
-        row_layout.addWidget(author_pic)
+        author_pic.setAlignment(Qt.AlignCenter)
 
-        # Text Information
-        text_layout = QVBoxLayout()
-        name_label = QLabel(data["book"])
-        name_label.setStyleSheet("font-weight: bold; font-size: 14px;")
-        stats_label = QLabel(f"{data['name']} • {data['type']}")
-        stats_label.setStyleSheet("font-size: 12px; color: #CCCCCC;")
+        row_layout.addWidget(author_pic_frame)
+
+        # Book author information
+        text_frame = QFrame(row_button)
+        text_frame.setStyleSheet("""
+            QFrame {
+                background-color: transparent;  
+            }
+        """)
+
+        text_layout = QVBoxLayout(text_frame)
+        text_layout.setContentsMargins(0, 0, 0, 0)
+        text_layout.setSpacing(2)
+
+        name_label = QLabel(data["book"], text_frame)
+        name_label.setStyleSheet("font-weight: bold; font-size: 14px; color: #FFFFFF;")
+
         text_layout.addWidget(name_label)
-        text_layout.addWidget(stats_label)
-        row_layout.addLayout(text_layout)
+        row_layout.addWidget(text_frame)
+        row_layout.addStretch()
 
-        return row
+        return row_button
+
+    def go_to_book(self, book_data):
+        page = QFrame()
+        page.setStyleSheet("background-color: #444444; border-radius: 8px;")
+
+        layout = QVBoxLayout(page)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(20)
+
+        from bookPage import BookPage
+        book_page = BookPage(
+            self.pages,
+            book_data.get('name', 'No Name'),
+            book_data.get('book', 'No Book'),
+            book_data.get('type', 'No Type'),
+            book_data.get('description','No description'),
+            book_data.get('image','No image')
+        )
+        layout.addWidget(book_page)
+
+        self.pages.addWidget(page)
+        self.pages.setCurrentWidget(page)
