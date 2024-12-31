@@ -1,0 +1,14 @@
+[
+    {
+        "username": "onur",
+        "password": "123",
+        "type": "student",
+        "image": "assets/kitaplar/Crime and Punishment.jpg"
+    },
+    {
+        "username": "admin",
+        "password": "123",
+        "type": "admin",
+        "image": "assets/kitaplar/One Hundred Years of Solitude.jpg"
+    }
+]
