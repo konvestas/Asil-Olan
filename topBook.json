@@ -1,0 +1,72 @@
+[
+    {
+        "name": "Jane Austen",
+        "book": "Pride and Prejudice",
+        "type": "Romantic Fiction",
+        "image": "assets/kitaplar/prideandprejudice.jpg",
+        "description": "asdasdasdsad"
+    },
+    {
+        "name": "Charles Dickens",
+        "book": "A Tale of Two Cities",
+        "type": "Historical Fiction",
+        "image": "assets/kitaplar/A Tale of Two Cities.jpg",
+        "description": "asdsadasdsadsad"
+    },
+    {
+        "name": "Mark Twain",
+        "book": "The Adventures of Huckleberry Finn",
+        "type": "Satire Humor Adventure",
+        "image": "assets/kitaplar/The Adventures of Huckleberry Finn.jpg",
+        "description": "asdasdasdsad"
+    },
+    {
+        "name": "Virginia Woolf",
+        "book": "Mrs. Dalloway",
+        "type": "Stream of Consciousness",
+        "image": "assets/kitaplar/Mrs. Dalloway.jpg",
+        "description": "asdasdasdasd"
+    },
+    {
+        "name": "Leo Tolstoy",
+        "book": "War and Peace",
+        "type": "Realism",
+        "image": "assets/kitaplar/War and Peace.jpg",
+        "description": "asdasdasdas"
+    },
+    {
+        "name": "Fyodor Dostoevsky",
+        "book": "Crime and Punishment",
+        "type": "Psychological Fiction",
+        "image": "assets/kitaplar/Crime and Punishment.jpg",
+        "description": "asdsadasdasdasd"
+    },
+    {
+        "name": "Yukio Mishima",
+        "book": "The Temple of the Golden Pavilion",
+        "type": "Psychological Fiction",
+        "image": "assets/kitaplar/The Temple of the Golden Pavilion.jpg",
+        "description": "asdasdasdsadasd"
+    },
+    {
+        "name": "Gabriel García Márquez",
+        "book": "One Hundred Years of Solitude",
+        "type": "Magical Realism",
+        "image": "assets/kitaplar/One Hundred Years of Solitude.jpg",
+        "description": "asdasdasdasdsad"
+    },
+    {
+        "name": "Chinua Achebe",
+        "book": "Things Fall Apart",
+        "type": "African Literature",
+        "image": "assets/kitaplar/Things Fall Apart.jpg",
+        "description": "asdasdasdasdasd"
+    },
+    {
+        "name": "Margaret Atwood",
+        "book": "The Handmaid's Tale",
+        "type": "Dystopian Fiction",
+        "image": "assets/kitaplar/The Handmaid's Tale.jpg",
+        "description": "asdasdasdaadsa"
+    }
+]
