@@ -7,7 +7,6 @@ class SignupPage(QWidget):
         super().__init__()
         self.pages = pages
 
-
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignCenter)
 
@@ -94,22 +93,34 @@ class SignupPage(QWidget):
 
 
 def check_signup(username, password):
-    user_exists = False
+    import json
 
-    with open("users", "r+", encoding='utf-8') as user_file:
-        lines = user_file.readlines()
-        for line in lines:
-            stored_username, stored_password  = line.strip().split(',')
-            if username == stored_username:
-                user_exists = True
-                break
+    users = []
+    try:
+        with open("users.json", "r", encoding="utf-8") as file:
+            users = json.load(file)
+    except FileNotFoundError:
+        print(f"users.json does not exist yet. Creating a new file.")
+    except json.JSONDecodeError:
+        print(f"Error: users.json is empty or corrupted. Creating a new file.")
 
-        if user_exists:
-            print(f"Username '{username}' exists.")
+    for user in users:
+        if username == user["username"]:
+            print(f"Username '{username}' already exists.")
             return False
-        else:
-            user_file.write(f"\n{username},{password}")
-            print(f"New user signed up successfully: {username}")
-            return True
 
+    new_user = {
+        "username": username,
+        "password": password,
+        "type": "student",  # Default user type
+        "image": ""  # Default empty image
+    }
+    users.append(new_user)
 
+    try:
+        with open("users.json", "w", encoding="utf-8") as file:
+            json.dump(users, file, ensure_ascii=False, indent=4)
+    except Exception as e:
+        print(f"Error saving user data: {e}")
+        return False
+    return True

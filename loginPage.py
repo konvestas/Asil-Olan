@@ -1,9 +1,5 @@
-import csv
-
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QPushButton, QLabel, QStackedWidget
 from PySide6.QtCore import Qt
-
-
 
 class LoginPage(QWidget):
     def __init__(self, pages: QStackedWidget):
@@ -66,8 +62,6 @@ class LoginPage(QWidget):
     def go_signupPage(self):
         self.pages.setCurrentIndex(0)
 
-
-
     def login(self):
         username = self.username_input.text()
         password = self.password_input.text()
@@ -76,21 +70,43 @@ class LoginPage(QWidget):
             self.error_label.setText("Enter all the fields")
             return
 
-        if check_login(username, password):
-            self.pages.setCurrentIndex(2)
+        data = {"username": username, "password": password}
 
+        if check_login(data):
+            self.pages.setCurrentIndex(2)
+            save_user(data)
         else:
             self.error_label.setText("Username or password wrong")
             print("Try again")
 
+def check_login(data):
+    import json
+    try:
+        with open("users.json", "r", encoding="utf-8") as file:
+            users = json.load(file)
+        for user in users:
+            if data["username"] == user["username"] and data["password"] == user["password"]:
+                return True
+    except FileNotFoundError:
+        print("Error: users.json file not found.")
+    except json.JSONDecodeError:
+        print("Error: Failed to decode JSON file.")
+    return False
 
+def save_user(data):
+    import json
+    try:
+        with open("logged_in_user.json", "w", encoding="utf-8") as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
+    except Exception as e:
+        print(f"Error saving user data: {e}")
 
-
-def check_login(username, password):
-        with open("users", "r", encoding='utf-8') as user_file:
-            for line in user_file:
-                stored_username, stored_password  = line.strip().split(',')
-                if username == stored_username and password == stored_password:
-                    return True
-        return False
-
+def get_saved_user():
+    import json
+    try:
+        with open("logged_in_user.json", "r", encoding="utf-8") as file:
+            data = json.load(file)
+        return data
+    except FileNotFoundError:
+        print("No user data found. Please log in first.")
+        return None
