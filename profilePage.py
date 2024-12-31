@@ -130,17 +130,17 @@ class ProfilePage(QFrame):
         changePic_button.setFixedSize(150, 35)
         changePic_button.setStyleSheet("""
             QPushButton {
-                background-color: #555555; 
-                border: none; 
-                border-radius: 8px; 
-                color: #FFFFFF; 
+                background-color: #555555;
+                border: none;
+                border-radius: 8px;
+                color: #FFFFFF;
                 font-weight: bold;
             }
             QPushButton:hover {
-                background-color: #666666;  
+                background-color: #666666;
             }
             QPushButton:pressed {
-                background-color: #777777;  
+                background-color: #777777;
             }
         """)
         changePic_button.clicked.connect(self.change_profile_picture)
@@ -200,17 +200,17 @@ class ProfilePage(QFrame):
         save_button.setFixedSize(150, 35)
         save_button.setStyleSheet("""
             QPushButton {
-                background-color: #555555; 
-                border: none; 
-                border-radius: 8px; 
-                color: #FFFFFF; 
+                background-color: #555555;
+                border: none;
+                border-radius: 8px;
+                color: #FFFFFF;
                 font-weight: bold;
             }
             QPushButton:hover {
-                background-color: #666666;  
+                background-color: #666666;
             }
             QPushButton:pressed {
-                background-color: #777777;  
+                background-color: #777777;
             }
         """)
         save_button.clicked.connect(self.save_changes)
@@ -313,8 +313,8 @@ class ProfilePage(QFrame):
         author_pic_frame.setFixedSize(50, 50)
         author_pic_frame.setStyleSheet("""
             QFrame {
-                background-color: transparent;  
-                border-radius: 10px;  
+                background-color: transparent;
+                border-radius: 10px;
             }
         """)
 
@@ -329,7 +329,7 @@ class ProfilePage(QFrame):
         text_frame = QFrame(row_button)
         text_frame.setStyleSheet("""
             QFrame {
-                background-color: transparent; 
+                background-color: transparent;
             }
         """)
 
