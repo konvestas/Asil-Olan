@@ -95,11 +95,17 @@ def check_login(data):
 
 def save_user(data):
     import json
-    try:
-        with open("logged_in_user.json", "w", encoding="utf-8") as file:
-            json.dump(data, file, ensure_ascii=False, indent=4)
-    except Exception as e:
-        print(f"Error saving user data: {e}")
+    success = False  # Flag to indicate if saving was successful
+    while not success:
+        try:
+            with open("logged_in_user.json", "w", encoding="utf-8") as file:
+                json.dump(data, file, ensure_ascii=False, indent=4)
+            success = True  # Set success flag to True when saving succeeds
+        except Exception as e:
+            print(f"Error saving user data: {e}")
+            # Optional: Either retry directly, or break to avoid infinite loops
+              # Remove this line if you want to keep retrying
+
 
 def get_saved_user():
     import json
