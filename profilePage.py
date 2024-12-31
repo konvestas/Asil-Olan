@@ -6,13 +6,12 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QPixmap, QIcon
 from PySide6.QtCore import Qt
 
-import csv
+
 
 class ProfilePage(QFrame):
     def __init__(self, pages: QStackedWidget):
         super().__init__()
         self.pages = pages
-        self.books_data = []
 
         self.setStyleSheet("""
                                     QWidget { background-color: #222222; color: #FFFFFF; }
@@ -114,17 +113,16 @@ class ProfilePage(QFrame):
         title_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(title_label)
 
-
+        #Profile pic
         self.profile_pic = QLabel()
 
         self.profile_pic.setFixedSize(200, 150)
         self.profile_pic.setStyleSheet("border: 2px solid #555555;background-color: #444444;border-radius: 7px;")
         self.profile_pic.setAlignment(Qt.AlignCenter)
 
-        pixmap = QPixmap("assets/kitaplar/photomode_13012023_190407.png").scaled(300, 250,
-                                                                                 Qt.KeepAspectRatioByExpanding,
-                                                                                 Qt.SmoothTransformation)
+        pixmap = self.load_user_picture()
         self.profile_pic.setPixmap(pixmap)
+
         layout.addWidget(self.profile_pic, alignment=Qt.AlignCenter)
 
         # Change image button
@@ -220,7 +218,10 @@ class ProfilePage(QFrame):
 
         return box
 
+
+
     def load_books_from_csv(self, filename):
+        import csv
         author = []
         try:
             with open(filename, "r", encoding="utf-8") as file:
@@ -348,6 +349,7 @@ class ProfilePage(QFrame):
         row_layout.addStretch()
         return row_button
 
+
     def change_profile_picture(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Select Profile Picture", "", "Images (*.png *.jpg *.jpeg)")
         if file_path:
@@ -357,10 +359,8 @@ class ProfilePage(QFrame):
     def save_changes(self):
         username = self.username_edit.text()
         password = self.password_edit.text()
-        email = self.email_edit.text()
 
-        # Placeholder logic to save the changes
-        print(f"Profile Updated:\nUsername: {username}\nPassword: {password}\nEmail: {email}")
+        print(f"Profile Updated:\nUsername: {username}\nPassword: {password}\n")
 
 
     def go_to_book(self, book_data):
@@ -379,3 +379,33 @@ class ProfilePage(QFrame):
 
         self.pages.addWidget(page)
         self.pages.setCurrentWidget(page)
+
+    def load_user_picture(self):
+        import json
+        from PySide6.QtGui import QPixmap
+        from loginPage import get_saved_user
+
+        logged_in_user = get_saved_user()
+
+        if logged_in_user:
+            logged_in_username = logged_in_user.get("username")
+            logged_in_password = logged_in_user.get("password")
+            try:
+                with open("users.json","r",encoding="utf-8") as file:
+                    data = json.load(file)
+                    for row in data:
+                        if row["username"] == logged_in_username and row["password"] == logged_in_password:
+                            image_path = row["image"]
+                            return QPixmap(image_path).scaled(
+                                200, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation
+                            )
+                    else:
+                        print(f"User '{logged_in_username}' not found in users.json")
+            except FileNotFoundError:
+                print("Error: users.json file not found.")
+        else:
+            print("Error: No user is currently logged in.")
+
+        return QPixmap("assets/kitaplar/photomode_13012023_190407.png").scaled(
+            200, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation
+        )
