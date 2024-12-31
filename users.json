@@ -3,12 +3,22 @@
         "username": "onur",
         "password": "123",
         "type": "student",
-        "image": "assets/kitaplar/Crime and Punishment.jpg"
+        "image": "assets/kitaplar/Crime and Punishment.jpg",
+        "books": [
+            {
+                "book": "Pride and Prejudice"
+            }
+        ]
     },
     {
         "username": "admin",
         "password": "123",
         "type": "admin",
-        "image": "assets/kitaplar/One Hundred Years of Solitude.jpg"
+        "image": "assets/kitaplar/One Hundred Years of Solitude.jpg",
+        "books": [
+            {
+                "book": "Mrs. Dalloway"
+            }
+        ]
     }
 ]
