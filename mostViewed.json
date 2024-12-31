@@ -1,0 +1,37 @@
+[
+    {
+        "name": "Fyodor Dostoevsky",
+        "book": "Crime and Punishment",
+        "type": "Psychological Fiction",
+        "image": "assets/kitaplar/Crime and Punishment.jpg",
+        "description": "asdasdsadas"
+    },
+    {
+        "name": "Yukio Mishima",
+        "book": "The Temple of the Golden Pavilion",
+        "type": "Psychological Fiction",
+        "image": "assets/kitaplar/The Temple of the Golden Pavilion.jpg",
+        "description": "asdasdasdasd"
+    },
+    {
+        "name": "Gabriel García Márquez",
+        "book": "One Hundred Years of Solitude",
+        "type": "Magical Realism",
+        "image": "assets/kitaplar/One Hundred Years of Solitude.jpg",
+        "description": "asdasdasdasd"
+    },
+    {
+        "name": "Chinua Achebe",
+        "book": "Things Fall Apart",
+        "type": "African Literature",
+        "image": "assets/kitaplar/Things Fall Apart.jpg",
+        "description": "asdasdasd"
+    },
+    {
+        "name": "Margaret Atwood",
+        "book": "The Handmaid's Tale",
+        "type": "Dystopian Fiction",
+        "image": "assets/kitaplar/The Handmaid's Tale.jpg",
+        "description": "asdasdsadsa"
+    }
+]

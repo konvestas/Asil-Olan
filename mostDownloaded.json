@@ -1,0 +1,37 @@
+[
+    {
+        "name": "Jane Austen",
+        "book": "Pride and Prejudice",
+        "type": "Romantic Fiction",
+        "image": "assets/kitaplar/prideandprejudice.jpg",
+        "description": "asdasdasdasd"
+    },
+    {
+        "name": "Charles Dickens",
+        "book": "A Tale of Two Cities",
+        "type": "Historical Fiction",
+        "image": "assets/kitaplar/A Tale of Two Cities.jpg",
+        "description": "aasdasdasdasdasd"
+    },
+    {
+        "name": "Mark Twain",
+        "book": "The Adventures of Huckleberry Finn",
+        "type": "Satire Humor Adventure",
+        "image": "assets/kitaplar/The Adventures of Huckleberry Finn.jpg",
+        "description": "asdasdasdasd"
+    },
+    {
+        "name": "Virginia Woolf",
+        "book": "Mrs. Dalloway",
+        "type": "Stream of Consciousness",
+        "image": "assets/kitaplar/Mrs. Dalloway.jpg",
+        "description": "asdasdsadsadsad"
+    },
+    {
+        "name": "Leo Tolstoy",
+        "book": "War and Peace",
+        "type": "Realism",
+        "image": "assets/kitaplar/War and Peace.jpg",
+        "description": "asdasdsadsad"
+    }
+]
