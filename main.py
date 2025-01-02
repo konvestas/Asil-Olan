@@ -43,7 +43,7 @@ class MainWindow(QMainWindow):
 
 
         self.setCentralWidget(self.pages)
-        self.pages.setCurrentIndex(2)
+        self.pages.setCurrentIndex(1)
 
 
 

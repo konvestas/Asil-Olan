@@ -112,9 +112,9 @@ def check_signup(username, password):
     new_user = {
         "username": username,
         "password": password,
-        "type": "student",  # Default user type
-        "image": "",  # Default empty image
-        "books":""
+        "type": "student",
+        "image": "",
+        "books":[]
     }
     users.append(new_user)
 

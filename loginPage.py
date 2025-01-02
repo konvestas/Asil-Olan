@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QPushButton, QLabel, QStackedWidget
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
+
 
 class LoginPage(QWidget):
     def __init__(self, pages: QStackedWidget):
@@ -58,6 +59,9 @@ class LoginPage(QWidget):
 
         self.setLayout(layout)
 
+        self.timer = QTimer(self)
+        self.timer.start(2000)
+
 
     def go_signupPage(self):
         self.pages.setCurrentIndex(0)
@@ -89,20 +93,16 @@ def check_login(data):
                 return True
     except FileNotFoundError:
         print("Error: users.json file not found.")
-    except json.JSONDecodeError:
-        print("Error: Failed to decode JSON file.")
     return False
 
 def save_user(data):
     import json
-    success = False  # Flag to indicate if saving was successful
-    while not success:
-        try:
-            with open("logged_in_user.json", "w", encoding="utf-8") as file:
-                json.dump(data, file, ensure_ascii=False, indent=4)
-            success = True
-        except Exception as e:
-            print(f"Error saving user data: {e}")
+    try:
+        with open("logged_in_user.json", "w", encoding="utf-8") as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
+        print("User data saved successfully.")
+    except Exception as e:
+        print(f"Error saving user data: {e}")
 
 def get_saved_user():
     import json

@@ -3,14 +3,79 @@
         "username": "onur",
         "password": "123",
         "type": "student",
-        "image": "C:/Users/Yazilim/PROJELER/PyCharm/Asil Olan/assets/kitaplar/The Handmaid's Tale.jpg",
-        "books": []
+        "image": "C:/Users/Yazilim/PROJELER/PyCharm/Asil Olan/assets/kitaplar/The Temple of the Golden Pavilion.jpg",
+        "books": [
+            {
+                "name": "Jane Austen",
+                "book": "Pride and Prejudice",
+                "type": "Romantic Fiction",
+                "image": "assets/kitaplar/prideandprejudice.jpg",
+                "description": "Pride and Prejudice is a novel by Jane Austen that satirizes issues of marriage and social class. It follows the relationship between the quick-to-judge Elizabeth Bennet and the haughty Mr. Darcy as both learn to mend their errors in judgment and look beyond markers of social status."
+            },
+            {
+                "name": "Yukio Mishima",
+                "book": "The Temple of the Golden Pavilion",
+                "type": "Psychological Fiction",
+                "image": "assets/kitaplar/The Temple of the Golden Pavilion.jpg",
+                "description": "The Temple of the Golden Pavilion (\u91d1\u95a3\u5bfa, Kinkaku-ji) is a novel by the Japanese author Yukio Mishima. It was published in 1956 and translated into English by Ivan Morris in 1959.\n\nThe novel is loosely based on the burning of the Reliquary (or Golden Pavilion) of Kinkaku-ji in Kyoto by a young Buddhist acolyte in 1950. The pavilion, dating from before 1400, was a national monument that had been spared destruction many times throughout history, and the arson shocked Japan."
+            },
+            {
+                "name": "Gabriel Garc\u00eda M\u00e1rquez",
+                "book": "One Hundred Years of Solitude",
+                "type": "Magical Realism",
+                "image": "assets/kitaplar/One Hundred Years of Solitude.jpg",
+                "description": "One Hundred Years of Solitude is the story of seven generations of the Buend\u00eda Family in the town of Macondo. The founders of Macondo, Jos\u00e9 Arcadio Buend\u00eda and \u00darsula Iguar\u00e1n, leave their hometown after Jos\u00e9 Arcadio kills Prudencio Aguilar after a cockfight for suggesting Jos\u00e9 Arcadio was impotent."
+            },
+            {
+                "name": "Virginia Woolf",
+                "book": "Mrs. Dalloway",
+                "type": "Stream of Consciousness",
+                "image": "assets/kitaplar/Mrs. Dalloway.jpg",
+                "description": "Mrs. Dalloway, novel by Virginia Woolf published in 1925. It examines one day in the life of Clarissa Dalloway, an upper-class Londoner married to a member of Parliament. Mrs. Dalloway is essentially plotless; what action there is takes place mainly in the characters\u2019 consciousness. The novel addresses the nature of time in personal experience through multiple interwoven stories, particularly that of Clarissa as she prepares for and hosts a party and that of the mentally damaged war veteran Septimus Warren Smith. The two characters can be seen as foils for each other."
+            },
+            {
+                "name": "Mark Twain",
+                "book": "The Adventures of Huckleberry Finn",
+                "type": "Satire Humor Adventure",
+                "image": "assets/kitaplar/The Adventures of Huckleberry Finn.jpg",
+                "description": "The Adventures of Huckleberry Finn, by American author Mark Twain, is a novel set in the pre-Civil War South that examines institutionalized racism and explores themes of freedom, civilization, and prejudice."
+            },
+            {
+                "name": "Leo Tolstoy",
+                "book": "War and Peace",
+                "type": "Realism",
+                "image": "assets/kitaplar/War and Peace.jpg",
+                "description": "War and Peace by Leo Tolstoy is an 1867 novel set between the years 1805 and 1813. It follows several different Russians and their families and the events leading up to and during the 1812 invasion of Russia by France. The three main families are the Rostovs, the Bolkonskys, and the Bezukhovs."
+            }
+        ]
     },
     {
         "username": "admin",
         "password": "123",
         "type": "admin",
         "image": "assets/kitaplar/One Hundred Years of Solitude.jpg",
+        "books": []
+    },
+    {
+        "username": "sinem",
+        "password": "123",
+        "type": "student",
+        "image": "",
+        "books": [
+            {
+                "name": "Margaret Atwood",
+                "book": "The Handmaid's Tale",
+                "type": "Dystopian Fiction",
+                "image": "assets/kitaplar/The Handmaid's Tale.jpg",
+                "description": "Overview. The Handmaid's Tale (1985) by Margaret Atwood is a dystopian novel set in a version of the United States that has been overthrown by religious fundamentalists. In what was once most likely Massachusetts, under the militaristic regime of the Republic of Gilead, women no longer have civil rights or autonomy."
+            }
+        ]
+    },
+    {
+        "username": "asd",
+        "password": "asd",
+        "type": "student",
+        "image": "",
         "books": [
 
         ]

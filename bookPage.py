@@ -124,7 +124,7 @@ class BookPage(QFrame):
                 background-color: #666666;
             }
         """)
-        back_button.clicked.connect(lambda: self.pages.setCurrentIndex(4))
+        back_button.clicked.connect(lambda: self.pages.setCurrentIndex(3))
         nav_buttons_layout.addWidget(back_button)
         nav_buttons_layout.addStretch()
 
@@ -265,11 +265,6 @@ class BookPage(QFrame):
             print("Error: users.json file not found in save_book.")
         except Exception as e:
             print(f"An error occurred in save_book: {e}")
-
-    def go_back(self):
-        current_index = self.pages.currentIndex()
-        if current_index > 0:
-            self.pages.setCurrentIndex(current_index - 1)
 
     def go_to_book(self, book_data):
         page = QFrame()

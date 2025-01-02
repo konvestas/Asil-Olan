@@ -4,8 +4,7 @@ from PySide6.QtWidgets import (
     QSizePolicy, QScrollArea, QWidget
 )
 from PySide6.QtGui import QPixmap, QIcon
-from PySide6.QtCore import Qt
-
+from PySide6.QtCore import Qt, QTimer
 
 
 class ProfilePage(QFrame):
@@ -77,26 +76,99 @@ class ProfilePage(QFrame):
         content_layout.addLayout(top_bar)
 
 
-        boxes = QHBoxLayout()
+        self.box_layout = QHBoxLayout()
 
         box_left = self.create_userBox()
-        box_topRight = self.create_book_box("Your downloads", "mostDownloaded.json")
-        box_bottomRight = self.create_book_box("Recommended Books", "mostDownloaded.json")
+        self.box_topRight = self.create_downloaded_box("Your downloads", "users.json")
+       # self.box_bottomRight = self.create_book_box("Recommended Books", "mostViewed.json")
 
 
-        right_boxes = QVBoxLayout()
+        right_boxes = QHBoxLayout()
         right_boxes.setSpacing(10)
+        right_boxes.addWidget(self.box_topRight)
+        #right_boxes.addWidget(self.box_bottomRight)
 
-        right_boxes.addWidget(box_topRight)
-        right_boxes.addWidget(box_bottomRight)
-
-        boxes.addWidget(box_left)
-        boxes.addLayout(right_boxes)
-
-        content_layout.addLayout(boxes)
+        self.box_layout.addWidget(box_left)
+        self.box_layout.addLayout(right_boxes)
+        content_layout.addLayout(self.box_layout)
 
         self.setLayout(main_layout)
 
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.refresh_downloads)
+        self.timer.start(5000)
+
+    def refresh_downloads(self):
+        self.box_layout.removeWidget(self.box_topRight)
+        self.box_topRight.deleteLater()
+
+        self.box_topRight = self.create_downloaded_box("Your downloads", "users.json")
+        self.box_topRight.setFixedSize(620, 344)
+        self.box_layout.addWidget(self.box_topRight)
+
+
+    def load_downloaded_books(self, filename):
+        import json
+        from loginPage import get_saved_user
+
+        # Get the saved user
+        user = get_saved_user()
+        if not user:
+            print("Error: No user information found.")
+            return []
+
+        username = user.get("username")
+        if not username:
+            print("Error: User has no username.")
+            return []
+
+        books = []
+        try:
+            with open(filename, "r", encoding="utf-8") as file:
+                data = json.load(file)
+
+                # Find the user with the matching username
+                for user_data in data:
+                    if user_data.get("username") == username:
+                        # Load the user's books
+                        for book in user_data.get("books", []):
+                            books.append({
+                                "name": book.get("name", "Unknown").strip(),
+                                "book": book.get("book", "Unknown").strip(),
+                                "type": book.get("type", "Unknown").strip(),
+                                "description": book.get("description", "").strip(),
+                                "image": book.get("image", "").strip()
+                            })
+                        break  # Exit the loop once the user's books are found
+
+        except FileNotFoundError:
+            print(f"Error: File '{filename}' not found.")
+        except json.JSONDecodeError:
+            print(f"Error: Failed to decode JSON in file '{filename}'.")
+        except Exception as e:
+            print(f"An unexpected error occurred while reading '{filename}': {e}")
+
+        return books
+
+    def load_books_json(self, filename):
+        import json
+
+        books = []
+        try:
+            with open(filename, "r", encoding="utf-8") as file:
+                data = json.load(file)
+                for row in data:
+                    books.append({
+                        "name": row.get("name", "Unknown").strip(),
+                        "book": row.get("book", "Unknown").strip(),
+                        "type": row.get("type", "Unknown").strip(),
+                        "description": row.get("description", "").strip(),
+                        "image": row.get("image", "").strip()
+                    })
+        except Exception as e:
+            print(f"Error reading JSON file '{filename}': {e}")
+
+        return books
 
     def create_userBox(self):
         box = QFrame()
@@ -206,25 +278,6 @@ class ProfilePage(QFrame):
         return box
 
 
-    def load_books_json(self, filename):
-        import json
-
-        books = []
-        try:
-            with open(filename, "r", encoding="utf-8") as file:
-                data = json.load(file)
-                for row in data:
-                    books.append({
-                        "name": row.get("name", "Unknown"),
-                        "book": row.get("book", "Unknown"),
-                        "type": row.get("type", "Unknown"),
-                        "image": row.get("image", ""),
-                        "description": row.get("description", "")
-                    })
-        except Exception as e:
-            print(f"Error reading JSON file '{filename}': {e}")
-
-        return books
 
     def create_book_box(self, own_label, file_name):
         box = QFrame()
@@ -261,6 +314,49 @@ class ProfilePage(QFrame):
         scroll_layout.setSpacing(10)
 
         books = self.load_books_json(file_name)
+        for book in books:
+            scroll_layout.addWidget(self.create_book_row(book))
+
+        scroll_layout.addStretch()
+        scroll_area.setWidget(scroll_content)
+        layout.addWidget(scroll_area)
+
+        return box
+    def create_downloaded_box(self, own_label, file_name):
+        box = QFrame()
+        box.setFixedSize(620, 344)
+        box.setStyleSheet("background-color: #333333; border-radius: 8px;")
+
+
+        layout = QVBoxLayout(box)
+        layout.setContentsMargins(15, 15, 15, 15)
+        layout.setSpacing(15)
+
+
+        top_layout = QHBoxLayout()
+
+        title_label = QLabel(own_label)
+        title_label.setStyleSheet("font-size: 20px; font-weight: bold;")
+
+        top_layout.addWidget(title_label)
+        layout.addLayout(top_layout)
+
+        # Scroll Area
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setStyleSheet("""
+            QScrollArea { background-color: transparent; }
+            QScrollBar:vertical { border: none; background: white; width: 10px;  }
+            QScrollBar::handle:vertical { background: #666666; border-radius: 5px; }
+            QScrollBar::handle:vertical:hover { background: #888888; }
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
+        """)
+        scroll_content = QWidget()
+        scroll_layout = QVBoxLayout(scroll_content)
+        scroll_layout.setContentsMargins(0, 0, 0, 0)
+        scroll_layout.setSpacing(10)
+
+        books = self.load_downloaded_books(file_name)
         for book in books:
             scroll_layout.addWidget(self.create_book_row(book))
 

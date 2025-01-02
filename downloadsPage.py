@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtCore import QSize, Qt
+from PySide6.QtCore import QTimer
 
 
 class DownloadsPage(QFrame):
@@ -23,7 +24,6 @@ class DownloadsPage(QFrame):
                                     QLabel { font-size: 14px; }
                                 """)
 
-
         main_layout = QHBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
@@ -34,12 +34,12 @@ class DownloadsPage(QFrame):
         main_layout.addWidget(side_menu)
 
         # Right content
-        content_layout = QVBoxLayout()
-        content_layout.setSpacing(10)
-        content_layout.setContentsMargins(10, 10, 10, 0)
+        self.content_layout = QVBoxLayout()
+        self.content_layout.setSpacing(10)
+        self.content_layout.setContentsMargins(10, 10, 10, 0)
 
         right_content = QFrame()
-        right_content.setLayout(content_layout)
+        right_content.setLayout(self.content_layout)
         right_content.setStyleSheet("background-color: #222222;")
         main_layout.addWidget(right_content)
 
@@ -48,9 +48,9 @@ class DownloadsPage(QFrame):
         label = QLabel("Downloads")
         label.setStyleSheet("font-size: 35px; font-weight: bold; color: white;")
         top_bar.addWidget(label)
-        content_layout.addLayout(top_bar)
+        self.content_layout.addLayout(top_bar)
 
-        # Gap between label search bar
+        # Gap between label and search bar
         spacer = QSpacerItem(10, 20, QSizePolicy.Minimum, QSizePolicy.Minimum)
         top_bar.addSpacerItem(spacer)
 
@@ -72,23 +72,36 @@ class DownloadsPage(QFrame):
                                     }
                                 """)
         top_bar.addWidget(search_bar, alignment=Qt.AlignLeft)
-        content_layout.addLayout(top_bar)
+        self.content_layout.addLayout(top_bar)
 
 
-        Box_layout = QHBoxLayout()
+        self.box_layout = QHBoxLayout()
+        self.content_layout.addLayout(self.box_layout)
 
-        box_topleft = self.create_book_box("Purchased", "users.json")
-        box_topleft.setFixedSize(1285, 701)
-        Box_layout.addWidget(box_topleft)
-        content_layout.addLayout(Box_layout)
+
+        self.book_box = self.create_book_box("Purchased", "users.json")
+        self.book_box.setFixedSize(1285, 701)
+        self.box_layout.addWidget(self.book_box)
+
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.refresh_book_box)
+        self.timer.start(3500)
 
         self.setLayout(main_layout)
+
+    def refresh_book_box(self):
+        self.box_layout.removeWidget(self.book_box)
+        self.book_box.deleteLater()
+
+        self.book_box = self.create_book_box("Purchased", "users.json")
+        self.book_box.setFixedSize(1285, 701)
+
+        self.box_layout.addWidget(self.book_box)
 
     def load_books_json(self, filename):
         import json
         from loginPage import get_saved_user
 
-        # Get the saved user
         user = get_saved_user()
         if not user:
             print("Error: No user information found.")
