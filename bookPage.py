@@ -235,12 +235,20 @@ class BookPage(QFrame):
                 print("Error: Logged-in username not found.")
                 return
 
+            # Flag to check if the user was found
             user_found = False
             for user in users:
                 if user["username"] == username:
                     user_found = True
+
                     if "books" not in user:
                         user["books"] = []
+
+                    # Check for duplicates (same book title)
+                    if any(book["book"] == book_book for book in user["books"]):
+                        print(f"The book '{book_book}' is already saved.")
+                        return
+
                     user["books"].append(new_book)
                     break
 
@@ -251,14 +259,12 @@ class BookPage(QFrame):
             with open("users.json", "w", encoding="utf-8") as file:
                 json.dump(users, file, indent=4)
 
-            print("Book saved successfully!")
+            print(f"The book '{book_book}' has been saved successfully!")
 
         except FileNotFoundError:
-            print("Error: users.json file not found bookpage savebook.")
-        except json.JSONDecodeError:
-            print("Error: Failed to parse users.json. Please fix the file's structure bookpage savebook.")
+            print("Error: users.json file not found in save_book.")
         except Exception as e:
-            print(f"An error occurred  bookpage savebook: {e}")
+            print(f"An error occurred in save_book: {e}")
 
     def go_back(self):
         current_index = self.pages.currentIndex()

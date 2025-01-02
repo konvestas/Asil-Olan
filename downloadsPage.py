@@ -77,13 +77,55 @@ class DownloadsPage(QFrame):
 
         Box_layout = QHBoxLayout()
 
-        box_topleft = self.create_book_box("Purchased", "topBook.json")
+        box_topleft = self.create_book_box("Purchased", "users.json")
         box_topleft.setFixedSize(1285, 701)
         Box_layout.addWidget(box_topleft)
         content_layout.addLayout(Box_layout)
 
         self.setLayout(main_layout)
 
+    def load_books_json(self, filename):
+        import json
+        from loginPage import get_saved_user
+
+        # Get the saved user
+        user = get_saved_user()
+        if not user:
+            print("Error: No user information found.")
+            return []
+
+        username = user.get("username")
+        if not username:
+            print("Error: User has no username.")
+            return []
+
+        books = []
+        try:
+            with open(filename, "r", encoding="utf-8") as file:
+                data = json.load(file)
+
+                # Find the user with the matching username
+                for user_data in data:
+                    if user_data.get("username") == username:
+                        # Load the user's books
+                        for book in user_data.get("books", []):
+                            books.append({
+                                "name": book.get("name", "Unknown").strip(),
+                                "book": book.get("book", "Unknown").strip(),
+                                "type": book.get("type", "Unknown").strip(),
+                                "description": book.get("description", "").strip(),
+                                "image": book.get("image", "").strip()
+                            })
+                        break  # Exit the loop once the user's books are found
+
+        except FileNotFoundError:
+            print(f"Error: File '{filename}' not found.")
+        except json.JSONDecodeError:
+            print(f"Error: Failed to decode JSON in file '{filename}'.")
+        except Exception as e:
+            print(f"An unexpected error occurred while reading '{filename}': {e}")
+
+        return books
 
     def create_book_box(self, own_label, file_name):
         box = QFrame()
@@ -218,22 +260,3 @@ class DownloadsPage(QFrame):
         self.pages.addWidget(page)
         self.pages.setCurrentWidget(page)
 
-    def load_books_json(self, filename):
-        import json
-
-        books = []
-        try:
-            with open(filename, "r", encoding="utf-8") as file:
-                data = json.load(file)
-                for row in data:
-                    books.append({
-                        "name": row.get("name", "Unknown").strip(),
-                        "book": row.get("book", "Unknown").strip(),
-                        "type": row.get("type", "Unknown").strip(),
-                        "description": row.get("description", "").strip(),
-                        "image": row.get("image", "").strip()
-                    })
-        except Exception as e:
-            print(f"Error reading JSON file '{filename}': {e}")
-
-        return books
