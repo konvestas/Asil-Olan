@@ -7,7 +7,7 @@ from PySide6.QtCore import Qt, QSize
 
 
 class BookPage(QFrame):
-    def __init__(self, pages: QStackedWidget, book_name, book_book, book_type, book_description=None, book_image=None):
+    def __init__(self, pages: QStackedWidget, book_name, book_book, book_type, book_image, book_description):
         super().__init__()
         self.setFixedSize(1475, 800)
 
@@ -16,8 +16,9 @@ class BookPage(QFrame):
         self.book_name = book_name
         self.book_book = book_book
         self.book_type = book_type
-        self.book_description = book_description
         self.book_image = book_image
+        self.book_description = book_description
+
 
         self.setStyleSheet("""
             QWidget { background-color: #222222; color: #FFFFFF; }
@@ -82,13 +83,13 @@ class BookPage(QFrame):
 
 
         boxes = QHBoxLayout()
-        box_right = self.create_info_bookBox(book_name, book_book, book_type, book_description, book_image)
+        box_right = self.create_info_bookBox(book_name, book_book, book_type, book_image, book_description)
         boxes.addWidget(box_right)
         content_layout.addLayout(boxes)
 
         self.setLayout(main_layout)
 
-    def create_info_bookBox(self, book_name, book_book, book_type, book_description, book_image):
+    def create_info_bookBox(self, book_name, book_book, book_type, book_image, book_description):
         box = QFrame()
         box.setFixedSize(1300, 701)
         box.setStyleSheet("background-color: #333333; border-radius: 8px;")
@@ -193,8 +194,8 @@ class BookPage(QFrame):
         details_layout.addWidget(description_label)
 
         # Action button
-        action_button = QPushButton("Action")
-        action_button.setStyleSheet("""
+        save_button = QPushButton("Save")
+        save_button.setStyleSheet("""
             QPushButton {
                 background-color: #555555;
                 color: #FFFFFF;
@@ -205,41 +206,59 @@ class BookPage(QFrame):
                 background-color: #666666;
             }
         """)
-        asd = f"{book_book}"
-        action_button.clicked.connect(self.save_book(asd))
-        details_layout.addWidget(action_button, alignment=Qt.AlignLeft)
+
+        save_button.clicked.connect(lambda: self.save_book(book_name, book_book, book_type, book_image, book_description))
+        details_layout.addWidget(save_button, alignment=Qt.AlignLeft)
 
         main_layout.addLayout(details_layout)
         return box
 
-    def save_book(self,book):
+    def save_book(self, book_name, book_book, book_type, book_image, book_description):
         import json
-        from loginPage import get_saved_user  # Assumes this retrieves the current logged-in user's object
-
         try:
-            # Step 1: Read the existing `users.json` file
+            new_book = {
+                "name": book_name,
+                "book": book_book,
+                "type": book_type,
+                "image": book_image,
+                "description": book_description
+            }
+
             with open("users.json", "r", encoding="utf-8") as file:
-                users = json.load(file)  # Load the JSON list containing all users
+                users = json.load(file)
 
-            # Step 2: Get the current logged-in user object
-            saved_user = get_saved_user()  # Assumes this provides the logged-in user's object
-            print(f"Current user object: {saved_user}")  # Debugging output
+            from loginPage import get_saved_user
+            logged_in_user = get_saved_user()
+            username = logged_in_user.get("username")
 
-            # Step 3: Locate the matching user in the list of users
+            if not username:
+                print("Error: Logged-in username not found.")
+                return
+
+            user_found = False
             for user in users:
-                # Assuming `saved_user` contains a uniquely identifying field like "username" to find the user
-                if user.get("username") == saved_user.get("username"):  # Match based on username or a unique ID
-                    user["books"].append({"book": {book}})  # Add the new book
+                if user["username"] == username:
+                    user_found = True
+                    if "books" not in user:
+                        user["books"] = []
+                    user["books"].append(new_book)
                     break
 
-            # Step 4: Write the updated data back to `users.json`
+            if not user_found:
+                print(f"Error: User '{username}' not found in users.json.")
+                return
+
             with open("users.json", "w", encoding="utf-8") as file:
-                json.dump(users, file, ensure_ascii=False, indent=4)  # Write updated data with formatting
+                json.dump(users, file, indent=4)
 
-            print(f"Book successfully saved for user '{saved_user['username']}'.")
+            print("Book saved successfully!")
 
+        except FileNotFoundError:
+            print("Error: users.json file not found bookpage savebook.")
+        except json.JSONDecodeError:
+            print("Error: Failed to parse users.json. Please fix the file's structure bookpage savebook.")
         except Exception as e:
-            print(f"Error saving book to users.json: {e}")
+            print(f"An error occurred  bookpage savebook: {e}")
 
     def go_back(self):
         current_index = self.pages.currentIndex()
@@ -255,8 +274,15 @@ class BookPage(QFrame):
         layout.setSpacing(20)
 
         from bookPage import BookPage
-        book_page = BookPage(self.pages, {book_data['name']}, {book_data['book']},
-                             {book_data['type']}, {book_data['description']}, {book_data['image']})
+        book_page = BookPage(
+            self.pages,
+            book_data.get('name', 'No Name'),
+            book_data.get('book', 'No Book'),
+            book_data.get('type', 'No Type'),
+            book_data.get('image', 'No image'),
+            book_data.get('description', 'No description')
+
+        )
         layout.addWidget(book_page)
 
         self.pages.addWidget(page)

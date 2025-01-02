@@ -77,21 +77,27 @@ class HomePage(QFrame):
         # Top Boxes
         top_boxes_layout = QHBoxLayout()
 
-        box_topleft = QFrame()
-        box_topleft.setFixedSize(620, 325)
-        box_topleft.setStyleSheet("background-color: #333333; border-radius: 8px;")
+        image_label = QLabel()
+        image_label.setFixedSize(620, 325)
+        image_label.setAlignment(Qt.AlignLeft)
 
-        box_topright = self.create_book_box("Top rated books", "mostDownloadedBooks")
+        pixmap = QPixmap("assets/icons/adam.jpg").scaled(
+            image_label.width(), image_label.height(),
+            Qt.KeepAspectRatio, Qt.SmoothTransformation
+        )
+        image_label.setPixmap(pixmap)
+        top_boxes_layout.addWidget(image_label)
 
-        top_boxes_layout.addWidget(box_topleft)
+
+        box_topright = self.create_book_box("Top rated books", "mostDownloaded.json")
+
         top_boxes_layout.addWidget(box_topright)
         content_layout.addLayout(top_boxes_layout)
 
-        # Bottom Boxes
         bottom_boxes_layout = QHBoxLayout()
 
-        box_botleft = self.create_book_box("New books", "topBooks")
-        box_botright = self.create_book_box("Our recommedations", "mostViewedBooks")
+        box_botleft = self.create_book_box("New books", "topBook.json")
+        box_botright = self.create_book_box("Our recommedations", "mostViewed.json")
 
         bottom_boxes_layout.addWidget(box_botleft)
         bottom_boxes_layout.addWidget(box_botright)
@@ -102,22 +108,25 @@ class HomePage(QFrame):
     def navigate_library(self):
         self.pages.setCurrentIndex(3)
 
-    def load_books_from_csv(self, filename):
-        author = []
+    def load_books_json(self, filename):
+        import json
+
+        books = []
         try:
             with open(filename, "r", encoding="utf-8") as file:
-                reader = csv.DictReader(file)
-                for row in reader:
-                    author.append({
-                        "name": row["name"],
-                        "book": row["book"],
-                        "type": row["type"],
-                        "description": row["description"],
-                        "image": row["image"]
+                data = json.load(file)
+                for row in data:
+                    books.append({
+                        "name": row.get("name", "Unknown").strip(),
+                        "book": row.get("book", "Unknown").strip(),
+                        "type": row.get("type", "Unknown").strip(),
+                        "description": row.get("description", "").strip(),
+                        "image": row.get("image", "").strip()
                     })
         except Exception as e:
-            print(f"Error reading CSV file: {e}")
-        return author
+            print(f"Error reading JSON file '{filename}': {e}")
+
+        return books
 
     def create_book_box(self, own_label, file_name):
         box = QFrame()
@@ -169,10 +178,9 @@ class HomePage(QFrame):
         scroll_layout.setContentsMargins(0, 0, 0, 0)
         scroll_layout.setSpacing(10)
 
-        # create row
-        authors = self.load_books_from_csv(file_name)
-        for author in authors:
-            scroll_layout.addWidget(self.create_book_row(author))
+        books = self.load_books_json(file_name)
+        for book in books:
+            scroll_layout.addWidget(self.create_book_row(book))
 
         scroll_layout.addStretch()
 
@@ -254,8 +262,15 @@ class HomePage(QFrame):
         layout.setSpacing(20)
 
         from bookPage import BookPage
-        book_page = BookPage(self.pages,{book_data['name']},{book_data['book']},
-                                        {book_data['type']},{book_data['description']},{book_data['image']})
+        book_page = BookPage(
+            self.pages,
+            book_data.get('name', 'No Name'),
+            book_data.get('book', 'No Book'),
+            book_data.get('type', 'No Type'),
+            book_data.get('image', 'No image'),
+            book_data.get('description', 'No description')
+
+        )
         layout.addWidget(book_page)
 
         self.pages.addWidget(page)

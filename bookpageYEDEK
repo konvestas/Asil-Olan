@@ -193,8 +193,8 @@ class BookPage(QFrame):
         details_layout.addWidget(description_label)
 
         # Action button
-        action_button = QPushButton("Action")
-        action_button.setStyleSheet("""
+        save_button = QPushButton("Save")
+        save_button.setStyleSheet("""
             QPushButton {
                 background-color: #555555;
                 color: #FFFFFF;
@@ -205,42 +205,37 @@ class BookPage(QFrame):
                 background-color: #666666;
             }
         """)
-        action_button.clicked.connect(self.save_book)
-        details_layout.addWidget(action_button, alignment=Qt.AlignLeft)
+
+        save_button.clicked.connect(self.save_book(f"{book_book}"))
+        details_layout.addWidget(save_button, alignment=Qt.AlignLeft)
 
         main_layout.addLayout(details_layout)
         return box
 
     def save_book(self,book):
         import json
-        from loginPage import get_saved_user  # Assumes this retrieves the current logged-in user's object
-
         try:
-            # Step 1: Read the existing `users.json` file
             with open("users.json", "r", encoding="utf-8") as file:
-                users = json.load(file)  # Load the JSON list containing all users
+                users = json.load(file)
 
-            # Step 2: Get the current logged-in user object
-            saved_user = get_saved_user()  # Assumes this provides the logged-in user's object
-            print(f"Current user object: {saved_user}")  # Debugging output
+            from loginPage import get_saved_user
+            saved_user = get_saved_user()
+            print(f"Current user object: {saved_user}")
 
-            # Step 3: Locate the matching user in the list of users
+            # Find the user and update their books list
             for user in users:
-                # Assuming `saved_user` contains a uniquely identifying field like "username" to find the user
-                if user.get("username") == saved_user.get("username"):  # Match based on username or a unique ID
-                    if "books" not in user:  # Ensure the "books" field exists
+                if user["username"] == saved_user["username"]:
+                    if "books" not in user or not isinstance(user["books"], list):
                         user["books"] = []
-                    user["books"].append({"book": self.book_book})  # Add the new book
+
+                    user["books"].append({"book": book})
                     break
 
-            # Step 4: Write the updated data back to `users.json`
             with open("users.json", "w", encoding="utf-8") as file:
-                json.dump(users, file, ensure_ascii=False, indent=4)  # Write updated data with formatting
-
-            print(f"Book successfully saved for user '{saved_user['username']}'.")
+                json.dump(users, file, ensure_ascii=False, indent=4)
 
         except Exception as e:
-            print(f"Error saving book to users.json: {e}")
+            print(f"Error saving book: {e}")
 
     def go_back(self):
         current_index = self.pages.currentIndex()

@@ -4,34 +4,34 @@
         "book": "Pride and Prejudice",
         "type": "Romantic Fiction",
         "image": "assets/kitaplar/prideandprejudice.jpg",
-        "description": "asdasdasdasd"
+        "description": "Pride and Prejudice is a novel by Jane Austen that satirizes issues of marriage and social class. It follows the relationship between the quick-to-judge Elizabeth Bennet and the haughty Mr. Darcy as both learn to mend their errors in judgment and look beyond markers of social status."
     },
     {
         "name": "Charles Dickens",
         "book": "A Tale of Two Cities",
         "type": "Historical Fiction",
         "image": "assets/kitaplar/A Tale of Two Cities.jpg",
-        "description": "aasdasdasdasdasd"
+        "description": "\nThe novel tells the story of the French Doctor Manette, his 18-year-long imprisonment in the Bastille in Paris, and his release to live in London with his daughter Lucie whom he had never met. The story is set against the conditions that led up to the French Revolution and the Reign of Terror."
     },
     {
         "name": "Mark Twain",
         "book": "The Adventures of Huckleberry Finn",
         "type": "Satire Humor Adventure",
         "image": "assets/kitaplar/The Adventures of Huckleberry Finn.jpg",
-        "description": "asdasdasdasd"
+        "description": "The Adventures of Huckleberry Finn, by American author Mark Twain, is a novel set in the pre-Civil War South that examines institutionalized racism and explores themes of freedom, civilization, and prejudice."
     },
     {
         "name": "Virginia Woolf",
         "book": "Mrs. Dalloway",
         "type": "Stream of Consciousness",
         "image": "assets/kitaplar/Mrs. Dalloway.jpg",
-        "description": "asdasdsadsadsad"
+        "description": "Mrs. Dalloway, novel by Virginia Woolf published in 1925. It examines one day in the life of Clarissa Dalloway, an upper-class Londoner married to a member of Parliament. Mrs. Dalloway is essentially plotless; what action there is takes place mainly in the characters’ consciousness. The novel addresses the nature of time in personal experience through multiple interwoven stories, particularly that of Clarissa as she prepares for and hosts a party and that of the mentally damaged war veteran Septimus Warren Smith. The two characters can be seen as foils for each other."
     },
     {
         "name": "Leo Tolstoy",
         "book": "War and Peace",
         "type": "Realism",
         "image": "assets/kitaplar/War and Peace.jpg",
-        "description": "asdasdsadsad"
+        "description": "War and Peace by Leo Tolstoy is an 1867 novel set between the years 1805 and 1813. It follows several different Russians and their families and the events leading up to and during the 1812 invasion of Russia by France. The three main families are the Rostovs, the Bolkonskys, and the Bezukhovs."
     }
 ]

@@ -4,69 +4,69 @@
         "book": "Pride and Prejudice",
         "type": "Romantic Fiction",
         "image": "assets/kitaplar/prideandprejudice.jpg",
-        "description": "asdasdasdsad"
+        "description": "Pride and Prejudice is a novel by Jane Austen that satirizes issues of marriage and social class. It follows the relationship between the quick-to-judge Elizabeth Bennet and the haughty Mr. Darcy as both learn to mend their errors in judgment and look beyond markers of social status."
     },
     {
         "name": "Charles Dickens",
         "book": "A Tale of Two Cities",
         "type": "Historical Fiction",
         "image": "assets/kitaplar/A Tale of Two Cities.jpg",
-        "description": "asdsadasdsadsad"
+        "description": "\nThe novel tells the story of the French Doctor Manette, his 18-year-long imprisonment in the Bastille in Paris, and his release to live in London with his daughter Lucie whom he had never met. The story is set against the conditions that led up to the French Revolution and the Reign of Terror."
     },
     {
         "name": "Mark Twain",
         "book": "The Adventures of Huckleberry Finn",
         "type": "Satire Humor Adventure",
         "image": "assets/kitaplar/The Adventures of Huckleberry Finn.jpg",
-        "description": "asdasdasdsad"
+        "description": "The Adventures of Huckleberry Finn, by American author Mark Twain, is a novel set in the pre-Civil War South that examines institutionalized racism and explores themes of freedom, civilization, and prejudice."
     },
     {
         "name": "Virginia Woolf",
         "book": "Mrs. Dalloway",
         "type": "Stream of Consciousness",
         "image": "assets/kitaplar/Mrs. Dalloway.jpg",
-        "description": "asdasdasdasd"
+        "description": "Mrs. Dalloway, novel by Virginia Woolf published in 1925. It examines one day in the life of Clarissa Dalloway, an upper-class Londoner married to a member of Parliament. Mrs. Dalloway is essentially plotless; what action there is takes place mainly in the characters’ consciousness. The novel addresses the nature of time in personal experience through multiple interwoven stories, particularly that of Clarissa as she prepares for and hosts a party and that of the mentally damaged war veteran Septimus Warren Smith. The two characters can be seen as foils for each other."
     },
     {
         "name": "Leo Tolstoy",
         "book": "War and Peace",
         "type": "Realism",
         "image": "assets/kitaplar/War and Peace.jpg",
-        "description": "asdasdasdas"
+        "description": "War and Peace by Leo Tolstoy is an 1867 novel set between the years 1805 and 1813. It follows several different Russians and their families and the events leading up to and during the 1812 invasion of Russia by France. The three main families are the Rostovs, the Bolkonskys, and the Bezukhovs."
     },
     {
         "name": "Fyodor Dostoevsky",
         "book": "Crime and Punishment",
         "type": "Psychological Fiction",
         "image": "assets/kitaplar/Crime and Punishment.jpg",
-        "description": "asdsadasdasdasd"
+        "description": "Crime and Punishment follows the mental anguish and moral dilemmas of Rodion Raskolnikov, an impoverished ex-student in Saint Petersburg who plans to kill an unscrupulous pawnbroker, an old woman who stores money and valuable objects in her flat."
     },
     {
         "name": "Yukio Mishima",
         "book": "The Temple of the Golden Pavilion",
         "type": "Psychological Fiction",
         "image": "assets/kitaplar/The Temple of the Golden Pavilion.jpg",
-        "description": "asdasdasdsadasd"
+        "description": "The Temple of the Golden Pavilion (金閣寺, Kinkaku-ji) is a novel by the Japanese author Yukio Mishima. It was published in 1956 and translated into English by Ivan Morris in 1959.\n\nThe novel is loosely based on the burning of the Reliquary (or Golden Pavilion) of Kinkaku-ji in Kyoto by a young Buddhist acolyte in 1950. The pavilion, dating from before 1400, was a national monument that had been spared destruction many times throughout history, and the arson shocked Japan."
     },
     {
         "name": "Gabriel García Márquez",
         "book": "One Hundred Years of Solitude",
         "type": "Magical Realism",
         "image": "assets/kitaplar/One Hundred Years of Solitude.jpg",
-        "description": "asdasdasdasdsad"
+        "description": "One Hundred Years of Solitude is the story of seven generations of the Buendía Family in the town of Macondo. The founders of Macondo, José Arcadio Buendía and Úrsula Iguarán, leave their hometown after José Arcadio kills Prudencio Aguilar after a cockfight for suggesting José Arcadio was impotent."
     },
     {
         "name": "Chinua Achebe",
         "book": "Things Fall Apart",
         "type": "African Literature",
         "image": "assets/kitaplar/Things Fall Apart.jpg",
-        "description": "asdasdasdasdasd"
+        "description": "The Things Fall Apart book details the life of Okonkwo. His struggle with his father's reputation, the standards of masculinity, and the cultural practices of his clan all mirror the hardships and eventual destruction of his clan. Things Fall Apart author, Chinua Achebe, provides a broad view of Igbo culture."
     },
     {
         "name": "Margaret Atwood",
         "book": "The Handmaid's Tale",
         "type": "Dystopian Fiction",
         "image": "assets/kitaplar/The Handmaid's Tale.jpg",
-        "description": "asdasdasdaadsa"
+        "description": "Overview. The Handmaid's Tale (1985) by Margaret Atwood is a dystopian novel set in a version of the United States that has been overthrown by religious fundamentalists. In what was once most likely Massachusetts, under the militaristic regime of the Republic of Gilead, women no longer have civil rights or autonomy."
     }
 ]

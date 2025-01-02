@@ -80,12 +80,13 @@ class ProfilePage(QFrame):
         boxes = QHBoxLayout()
 
         box_left = self.create_userBox()
-        box_topRight = self.create_book_box("Your downloads", "mostDownloadedBooks")
-        box_bottomRight = self.create_book_box("Recommended Books", "mostDownloadedBooks")
+        box_topRight = self.create_book_box("Your downloads", "mostDownloaded.json")
+        box_bottomRight = self.create_book_box("Recommended Books", "mostDownloaded.json")
 
-        # Vertical layout for right-side stacking
+
         right_boxes = QVBoxLayout()
         right_boxes.setSpacing(10)
+
         right_boxes.addWidget(box_topRight)
         right_boxes.addWidget(box_bottomRight)
 
@@ -179,20 +180,6 @@ class ProfilePage(QFrame):
         password_layout.addWidget(self.password_edit)
         form_layout.addLayout(password_layout)
 
-        # Email Field
-        email_layout = QHBoxLayout()
-        email_label = QLabel("Email:")
-        email_label.setStyleSheet("font-size: 14px; color: #FFFFFF;")
-        self.email_edit = QLineEdit()
-        self.email_edit.setPlaceholderText("Enter your email")
-        self.email_edit.setFixedSize(200, 30)
-        self.email_edit.setStyleSheet(
-            "background-color: #444444; border: 1px solid #555555; border-radius: 5px; padding: 5px;")
-
-        email_layout.addWidget(email_label)
-        email_layout.addWidget(self.email_edit)
-        form_layout.addLayout(email_layout)
-
         layout.addLayout(form_layout)
 
         # Save Changes button
@@ -219,36 +206,37 @@ class ProfilePage(QFrame):
         return box
 
 
+    def load_books_json(self, filename):
+        import json
 
-    def load_books_from_csv(self, filename):
-        import csv
-        author = []
+        books = []
         try:
             with open(filename, "r", encoding="utf-8") as file:
-                reader = csv.DictReader(file)
-                for row in reader:
-                    author.append({
-                        "name": row["name"],
-                        "book": row["book"],
-                        "type": row["type"],
-                        "description": row["description"],
-                        "image": row["image"]
+                data = json.load(file)
+                for row in data:
+                    books.append({
+                        "name": row.get("name", "Unknown"),
+                        "book": row.get("book", "Unknown"),
+                        "type": row.get("type", "Unknown"),
+                        "image": row.get("image", ""),
+                        "description": row.get("description", "")
                     })
         except Exception as e:
-            print(f"Error reading CSV file: {e}")
-        return author
+            print(f"Error reading JSON file '{filename}': {e}")
+
+        return books
 
     def create_book_box(self, own_label, file_name):
         box = QFrame()
         box.setFixedSize(620, 344)
         box.setStyleSheet("background-color: #333333; border-radius: 8px;")
 
-        # Main layout for the box
+
         layout = QVBoxLayout(box)
         layout.setContentsMargins(15, 15, 15, 15)
         layout.setSpacing(15)
 
-        # Top Section
+
         top_layout = QHBoxLayout()
 
         title_label = QLabel(own_label)
@@ -267,16 +255,14 @@ class ProfilePage(QFrame):
             QScrollBar::handle:vertical:hover { background: #888888; }
             QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
         """)
-
-        # Container for scroll content
         scroll_content = QWidget()
         scroll_layout = QVBoxLayout(scroll_content)
         scroll_layout.setContentsMargins(0, 0, 0, 0)
         scroll_layout.setSpacing(10)
 
-        authors = self.load_books_from_csv(file_name)
-        for author in authors:
-            scroll_layout.addWidget(self.create_book_row(author))
+        books = self.load_books_json(file_name)
+        for book in books:
+            scroll_layout.addWidget(self.create_book_row(book))
 
         scroll_layout.addStretch()
         scroll_area.setWidget(scroll_content)
@@ -349,32 +335,75 @@ class ProfilePage(QFrame):
         row_layout.addStretch()
         return row_button
 
-
     def change_profile_picture(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Select Profile Picture", "", "Images (*.png *.jpg *.jpeg)")
-        if file_path:
-            pixmap = QPixmap(file_path).scaled(150, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-            self.profile_pic.setPixmap(pixmap)
+        if not file_path:
+            print("No profile picture selected.")
+            return
+
+        self.new_profile_picture_path = file_path
+
+        pixmap = QPixmap(self.new_profile_picture_path).scaled(150, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.profile_pic.setPixmap(pixmap)
 
     def save_changes(self):
-        username = self.username_edit.text()
-        password = self.password_edit.text()
+        import json
+        from loginPage import get_saved_user
 
-        print(f"Profile Updated:\nUsername: {username}\nPassword: {password}\n")
+        username_entered = self.username_edit.text()
+        password_entered = self.password_edit.text()
 
+        logged_in_user = get_saved_user()
+
+        if logged_in_user:
+            logged_in_username = logged_in_user.get("username")
+            logged_in_password = logged_in_user.get("password")
+
+            if username_entered != logged_in_username or password_entered != logged_in_password:
+                print("Error: Incorrect username or password.")
+                return
+
+            try:
+                with open("users.json", "r", encoding="utf-8") as file:
+                    data = json.load(file)
+
+                for row in data:
+                    if row["username"] == logged_in_username and row["password"] == logged_in_password:
+
+                        row["username"] = username_entered
+                        row["password"] = password_entered
+
+
+                        if hasattr(self, 'new_profile_picture_path'):
+                            row["image"] = self.new_profile_picture_path
+                        break
+
+                with open("users.json", "w", encoding="utf-8") as file:
+                    json.dump(data, file, indent=4)
+
+            except FileNotFoundError:
+                print("Error: users.json file not found.")
+        else:
+            print("Error: No user is currently logged in.")
 
     def go_to_book(self, book_data):
         page = QFrame()
         page.setStyleSheet("background-color: #444444; border-radius: 8px;")
 
-        # Main layout for the box
         layout = QVBoxLayout(page)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(20)
 
         from bookPage import BookPage
-        book_page = BookPage(self.pages,{book_data['name']},{book_data['book']},
-                                        {book_data['type']},{book_data['description']},{book_data['image']})
+        book_page = BookPage(
+            self.pages,
+            book_data.get('name', 'No Name'),
+            book_data.get('book', 'No Book'),
+            book_data.get('type', 'No Type'),
+            book_data.get('image', 'No image'),
+            book_data.get('description', 'No description')
+
+        )
         layout.addWidget(book_page)
 
         self.pages.addWidget(page)

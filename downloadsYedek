@@ -195,28 +195,21 @@ class DownloadsPage(QFrame):
         row_layout.addStretch()
         return row_button
 
-    def go_to_book(self, book_data):
-        page = QFrame()
-        page.setStyleSheet("background-color: #444444; border-radius: 8px;")
+        def go_to_book(self, book_data):
+            page = QFrame()
+            page.setStyleSheet("background-color: #444444; border-radius: 8px;")
 
-        layout = QVBoxLayout(page)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(20)
+            layout = QVBoxLayout(page)
+            layout.setContentsMargins(0, 0, 0, 0)
+            layout.setSpacing(20)
 
-        from bookPage import BookPage
-        book_page = BookPage(
-            self.pages,
-            book_data.get('name', 'No Name'),
-            book_data.get('book', 'No Book'),
-            book_data.get('type', 'No Type'),
-            book_data.get('image', 'No image'),
-            book_data.get('description', 'No description')
+            from bookPage import BookPage
+            book_page = BookPage(self.pages, {book_data['name']}, {book_data['book']},
+                             {book_data['type']}, {book_data['image']}, {book_data['description']})
+            layout.addWidget(book_page)
 
-        )
-        layout.addWidget(book_page)
-
-        self.pages.addWidget(page)
-        self.pages.setCurrentWidget(page)
+            self.pages.addWidget(page)
+            self.pages.setCurrentWidget(page)
 
     def load_books_json(self, filename):
         import json

@@ -80,12 +80,13 @@ class ProfilePage(QFrame):
         boxes = QHBoxLayout()
 
         box_left = self.create_userBox()
-        box_topRight = self.create_book_box("Your downloads", "mostDownloadedBooks")
-        box_bottomRight = self.create_book_box("Recommended Books", "mostDownloadedBooks")
+        box_topRight = self.create_book_box("Your downloads", "mostDownloaded.json")
+        box_bottomRight = self.create_book_box("Recommended Books", "mostDownloaded.json")
 
-        # Vertical layout for right-side stacking
+
         right_boxes = QVBoxLayout()
         right_boxes.setSpacing(10)
+
         right_boxes.addWidget(box_topRight)
         right_boxes.addWidget(box_bottomRight)
 
@@ -219,36 +220,37 @@ class ProfilePage(QFrame):
         return box
 
 
+    def load_books_json(self, filename):
+        import json
 
-    def load_books_from_csv(self, filename):
-        import csv
-        author = []
+        books = []
         try:
             with open(filename, "r", encoding="utf-8") as file:
-                reader = csv.DictReader(file)
-                for row in reader:
-                    author.append({
-                        "name": row["name"],
-                        "book": row["book"],
-                        "type": row["type"],
-                        "description": row["description"],
-                        "image": row["image"]
+                data = json.load(file)
+                for row in data:
+                    books.append({
+                        "name": row.get("name", "Unknown").strip(),
+                        "book": row.get("book", "Unknown").strip(),
+                        "type": row.get("type", "Unknown").strip(),
+                        "description": row.get("description", "").strip(),
+                        "image": row.get("image", "").strip()
                     })
         except Exception as e:
-            print(f"Error reading CSV file: {e}")
-        return author
+            print(f"Error reading JSON file '{filename}': {e}")
+
+        return books
 
     def create_book_box(self, own_label, file_name):
         box = QFrame()
         box.setFixedSize(620, 344)
         box.setStyleSheet("background-color: #333333; border-radius: 8px;")
 
-        # Main layout for the box
+
         layout = QVBoxLayout(box)
         layout.setContentsMargins(15, 15, 15, 15)
         layout.setSpacing(15)
 
-        # Top Section
+
         top_layout = QHBoxLayout()
 
         title_label = QLabel(own_label)
@@ -267,16 +269,14 @@ class ProfilePage(QFrame):
             QScrollBar::handle:vertical:hover { background: #888888; }
             QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
         """)
-
-        # Container for scroll content
         scroll_content = QWidget()
         scroll_layout = QVBoxLayout(scroll_content)
         scroll_layout.setContentsMargins(0, 0, 0, 0)
         scroll_layout.setSpacing(10)
 
-        authors = self.load_books_from_csv(file_name)
-        for author in authors:
-            scroll_layout.addWidget(self.create_book_row(author))
+        books = self.load_books_json(file_name)
+        for book in books:
+            scroll_layout.addWidget(self.create_book_row(book))
 
         scroll_layout.addStretch()
         scroll_area.setWidget(scroll_content)
@@ -367,7 +367,7 @@ class ProfilePage(QFrame):
         page = QFrame()
         page.setStyleSheet("background-color: #444444; border-radius: 8px;")
 
-        # Main layout for the box
+
         layout = QVBoxLayout(page)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(20)

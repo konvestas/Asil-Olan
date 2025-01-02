@@ -77,13 +77,13 @@ class LibraryPage(QFrame):
         # Top Boxes
         top_boxes_layout = QHBoxLayout()
 
-        box_topleft = self.create_book_box("Top books", "topBooks")
+        box_topleft = self.create_book_box("Top books", "topBook.json")
         box_topleft.setFixedSize(410, 701)
 
-        box_topmiddle = self.create_book_box("Most viewed", "mostViewedBooks")
+        box_topmiddle = self.create_book_box("Most viewed", "mostViewed.json")
         box_topmiddle.setFixedSize(410, 701)
 
-        box_topright = self.create_book_box("Most downloaded", "mostDownloadedBooks")
+        box_topright = self.create_book_box("Most downloaded", "mostDownloaded.json")
         box_topright.setFixedSize(410, 701)
 
         top_boxes_layout.addWidget(box_topleft)
@@ -93,21 +93,25 @@ class LibraryPage(QFrame):
 
         self.setLayout(main_layout)
 
-    def load_books_from_csv(self, filename):
-        author = []
+    def load_books_json(self, filename):
+        import json
+
+        books = []
         try:
             with open(filename, "r", encoding="utf-8") as file:
-                reader = csv.DictReader(file)
-                for row in reader:
-                    author.append({
-                        "name": row["name"],
-                        "book": row["book"],
-                        "type": row["type"],
-                        "image": row["image"]
+                data = json.load(file)
+                for row in data:
+                    books.append({
+                        "name": row.get("name", "Unknown").strip(),
+                        "book": row.get("book", "Unknown").strip(),
+                        "type": row.get("type", "Unknown").strip(),
+                        "description": row.get("description", "").strip(),
+                        "image": row.get("image", "").strip()
                     })
         except Exception as e:
-            print(f"Error reading CSV file: {e}")
-        return author
+            print(f"Error reading JSON file '{filename}': {e}")
+
+        return books
 
     def create_book_box(self, own_label, file_name):
         box = QFrame()
@@ -146,10 +150,9 @@ class LibraryPage(QFrame):
         scroll_layout.setContentsMargins(0, 0, 0, 0)
         scroll_layout.setSpacing(10)
 
-        # create row
-        authors = self.load_books_from_csv(file_name)
-        for author in authors:
-            scroll_layout.addWidget(self.create_book_row(author))
+        books = self.load_books_json(file_name)
+        for book in books:
+            scroll_layout.addWidget(self.create_book_row(book))
 
         scroll_layout.addStretch()
         scroll_area.setWidget(scroll_content)
@@ -233,8 +236,9 @@ class LibraryPage(QFrame):
             book_data.get('name', 'No Name'),
             book_data.get('book', 'No Book'),
             book_data.get('type', 'No Type'),
-            book_data.get('description','No description'),
-            book_data.get('image','No image')
+            book_data.get('image', 'No image'),
+            book_data.get('description', 'No description')
+
         )
         layout.addWidget(book_page)
 

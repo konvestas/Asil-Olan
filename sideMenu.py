@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QHBoxLayout, QStackedWidget, QWidget, QLabel
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QPixmap, Qt
 from PySide6.QtCore import QSize
 
 
@@ -31,13 +31,22 @@ class SideMenu(QWidget):
                           }
                       """)
 
-        # Layout for sidebar
+
         sidebar_layout = QVBoxLayout()
         sidebar_layout.setContentsMargins(0, 0, 0, 30)
         sidebar_layout.setSpacing(20)
 
-        # Space at the top
-        sidebar_layout.addSpacing(94)
+        # Logo at the top
+        logo_label = QLabel()
+        logo_pixmap = QPixmap("assets/icons/logo.jpg").scaled(80, 80, aspectMode=Qt.KeepAspectRatio)
+        logo_label.setPixmap(logo_pixmap)
+        logo_label.setStyleSheet(
+            "border-radius: 10px;")
+        logo_label.setAlignment(Qt.AlignCenter)
+        logo_label.setContentsMargins(0,20,0,0)
+
+
+        sidebar_layout.addWidget(logo_label)
 
         # Separator line 1
         separator_layout = QHBoxLayout()
@@ -50,7 +59,7 @@ class SideMenu(QWidget):
 
         separator_layout.addWidget(separator)
         sidebar_layout.addLayout(separator_layout)
-        sidebar_layout.addSpacing(30)
+        sidebar_layout.addSpacing(35)
 
 
         buttons = [
@@ -82,7 +91,6 @@ class SideMenu(QWidget):
         sidebar_layout.addLayout(separator_layout)
 
 
-        # Bottom Buttons
         bottom_buttons = [
             {"text": "Profile", "icon": "assets/icons/profile_icon.png", "index": 5},
             {"text": "Logout", "icon": "assets/icons/logout_icon.png", "index": 1},
@@ -100,4 +108,5 @@ class SideMenu(QWidget):
         layout = QHBoxLayout(self)
         layout.addWidget(sidebar)
         layout.addStretch()
+
         self.setLayout(layout)
