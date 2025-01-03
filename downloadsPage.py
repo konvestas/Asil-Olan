@@ -117,10 +117,8 @@ class DownloadsPage(QFrame):
             with open(filename, "r", encoding="utf-8") as file:
                 data = json.load(file)
 
-                # Find the user with the matching username
                 for user_data in data:
                     if user_data.get("username") == username:
-                        # Load the user's books
                         for book in user_data.get("books", []):
                             books.append({
                                 "name": book.get("name", "Unknown").strip(),
@@ -129,7 +127,7 @@ class DownloadsPage(QFrame):
                                 "description": book.get("description", "").strip(),
                                 "image": book.get("image", "").strip()
                             })
-                        break  # Exit the loop once the user's books are found
+                        break
 
         except FileNotFoundError:
             print(f"Error: File '{filename}' not found.")
@@ -145,7 +143,7 @@ class DownloadsPage(QFrame):
         box.setFixedSize(625, 325)
         box.setStyleSheet("background-color: #333333; border-radius: 8px;")
 
-        # Main layout for the box
+        # Main layout
         layout = QVBoxLayout(box)
         layout.setContentsMargins(15, 15, 15, 15)
         layout.setSpacing(15)
@@ -226,7 +224,7 @@ class DownloadsPage(QFrame):
 
         row_layout.addWidget(author_pic_frame)
 
-        # Book author information
+        # Book & author information
         text_frame = QFrame(row_button)
         text_frame.setStyleSheet("""
             QFrame {

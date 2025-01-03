@@ -32,12 +32,12 @@ class BookPage(QFrame):
             QLabel { font-size: 14px; }
         """)
 
-        # Create main layout
+        # main layout
         main_layout = QHBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
 
-        # Side menu
+
         from sideMenu import SideMenu
         side_menu = SideMenu(self.pages)
         side_menu.setFixedWidth(150)
@@ -140,7 +140,6 @@ class BookPage(QFrame):
         book_picture.setAlignment(Qt.AlignCenter)
         book_picture.setStyleSheet("border: 2px solid #555555; background-color: #444444; border-radius: 5px;")
 
-        # Load book image
         if isinstance(book_image, set):
             book_image = next(iter(book_image), "")
 
@@ -193,7 +192,7 @@ class BookPage(QFrame):
         description_label.setWordWrap(True)
         details_layout.addWidget(description_label)
 
-        # Action button
+        # Save button
         save_button = QPushButton("Save")
         save_button.setStyleSheet("""
             QPushButton {
@@ -235,7 +234,6 @@ class BookPage(QFrame):
                 print("Error: Logged-in username not found.")
                 return
 
-            # Flag to check if the user was found
             user_found = False
             for user in users:
                 if user["username"] == username:
@@ -244,7 +242,6 @@ class BookPage(QFrame):
                     if "books" not in user:
                         user["books"] = []
 
-                    # Check for duplicates (same book title)
                     if any(book["book"] == book_book for book in user["books"]):
                         print(f"The book '{book_book}' is already saved.")
                         return

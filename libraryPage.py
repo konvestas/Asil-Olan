@@ -1,4 +1,3 @@
-import csv
 from PySide6.QtWidgets import (
     QFrame, QVBoxLayout, QPushButton, QHBoxLayout, QLabel,
     QLineEdit, QWidget, QStackedWidget, QSpacerItem,
@@ -118,7 +117,7 @@ class LibraryPage(QFrame):
         box.setFixedSize(625, 325)
         box.setStyleSheet("background-color: #333333; border-radius: 8px;")
 
-        # Main layout for the box
+        # Main layout
         layout = QVBoxLayout(box)
         layout.setContentsMargins(15, 15, 15, 15)
         layout.setSpacing(15)

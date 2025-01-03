@@ -1,4 +1,3 @@
-
 from PySide6.QtWidgets import (
     QFrame, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QStackedWidget, QLineEdit, QFileDialog, QSpacerItem,
     QSizePolicy, QScrollArea, QWidget
@@ -111,7 +110,6 @@ class ProfilePage(QFrame):
         import json
         from loginPage import get_saved_user
 
-        # Get the saved user
         user = get_saved_user()
         if not user:
             print("Error: No user information found.")
@@ -127,10 +125,9 @@ class ProfilePage(QFrame):
             with open(filename, "r", encoding="utf-8") as file:
                 data = json.load(file)
 
-                # Find the user with the matching username
                 for user_data in data:
                     if user_data.get("username") == username:
-                        # Load the user's books
+
                         for book in user_data.get("books", []):
                             books.append({
                                 "name": book.get("name", "Unknown").strip(),
@@ -139,7 +136,7 @@ class ProfilePage(QFrame):
                                 "description": book.get("description", "").strip(),
                                 "image": book.get("image", "").strip()
                             })
-                        break  # Exit the loop once the user's books are found
+                        break
 
         except FileNotFoundError:
             print(f"Error: File '{filename}' not found.")
@@ -277,18 +274,14 @@ class ProfilePage(QFrame):
 
         return box
 
-
-
     def create_book_box(self, own_label, file_name):
         box = QFrame()
         box.setFixedSize(620, 344)
         box.setStyleSheet("background-color: #333333; border-radius: 8px;")
 
-
         layout = QVBoxLayout(box)
         layout.setContentsMargins(15, 15, 15, 15)
         layout.setSpacing(15)
-
 
         top_layout = QHBoxLayout()
 
@@ -322,16 +315,15 @@ class ProfilePage(QFrame):
         layout.addWidget(scroll_area)
 
         return box
+
     def create_downloaded_box(self, own_label, file_name):
         box = QFrame()
         box.setFixedSize(620, 344)
         box.setStyleSheet("background-color: #333333; border-radius: 8px;")
 
-
         layout = QVBoxLayout(box)
         layout.setContentsMargins(15, 15, 15, 15)
         layout.setSpacing(15)
-
 
         top_layout = QHBoxLayout()
 
