@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QPushButton, QLabel, QStackedWidget
 from PySide6.QtCore import Qt
 
-
 class SignupPage(QWidget):
     def __init__(self, pages: QStackedWidget):
         super().__init__()

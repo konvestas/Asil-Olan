@@ -172,12 +172,11 @@ class ProfilePage(QFrame):
         box.setFixedSize(657, 701)
         box.setStyleSheet("background-color: #333333; border-radius: 8px;")
 
-        # Main layout for the box
         layout = QVBoxLayout(box)
         layout.setContentsMargins(15, 15, 15, 15)
         layout.setSpacing(20)
 
-        # Title Section
+        # Title
         title_label = QLabel("Your Details")
         title_label.setStyleSheet("font-size: 20px; font-weight: bold; color: #FFFFFF;")
         title_label.setAlignment(Qt.AlignCenter)
@@ -378,7 +377,6 @@ class ProfilePage(QFrame):
         """)
         row_button.clicked.connect(lambda: self.go_to_book(data))
 
-        # Layout inside the button
         row_layout = QHBoxLayout(row_button)
         row_layout.setContentsMargins(10, 5, 10, 5)
         row_layout.setSpacing(10)

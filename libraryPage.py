@@ -143,7 +143,6 @@ class LibraryPage(QFrame):
                     QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
                 """)
 
-        # Container for scroll content
         scroll_content = QWidget()
         scroll_layout = QVBoxLayout(scroll_content)
         scroll_layout.setContentsMargins(0, 0, 0, 0)

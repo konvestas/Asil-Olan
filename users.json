@@ -76,8 +76,21 @@
         "password": "asd",
         "type": "student",
         "image": "",
+        "books": []
+    },
+    {
+        "username": "xlizax",
+        "password": "a12b21c3",
+        "type": "student",
+        "image": "",
         "books": [
-
+            {
+                "name": "Jane Austen",
+                "book": "Pride and Prejudice",
+                "type": "Romantic Fiction",
+                "image": "assets/kitaplar/prideandprejudice.jpg",
+                "description": "Pride and Prejudice is a novel by Jane Austen that satirizes issues of marriage and social class. It follows the relationship between the quick-to-judge Elizabeth Bennet and the haughty Mr. Darcy as both learn to mend their errors in judgment and look beyond markers of social status."
+            }
         ]
     }
 ]
